@@ -32,6 +32,7 @@ window.numCats = numCats;
 
 function getFormattedMapConfiguration() {
     const mapConfiguration = JSON.parse(localStorage.getItem('mapConfiguration'));
+    console.log(mapConfiguration);
 
     if (!mapConfiguration) {
         console.log('No map configuration found in local storage.');
@@ -56,7 +57,7 @@ function getFormattedMapConfiguration() {
 // Call the function and log the result to see the formatted map
 const formattedMap = getFormattedMapConfiguration();
 if (formattedMap) {
-    formattedMap.forEach(row => console.log(row.join(' ')));
+    formattedMap.forEach(row => console.log(row.join('')));
 }
 
 console.log(formattedMap);
