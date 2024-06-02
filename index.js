@@ -30,72 +30,11 @@ let success = 0;
 // Declare numCats as a global variable
 window.numCats = numCats;
 
-function getFormattedMapConfiguration() {
-    const mapConfiguration = JSON.parse(localStorage.getItem('mapConfiguration'));
-    console.log(mapConfiguration);
-
-    if (!mapConfiguration) {
-        console.log('No map configuration found in local storage.');
-        return null;
-    }
-
-    const dimensions = Math.sqrt(mapConfiguration.length);
-    const formattedMap = [];
-
-    for (let i = 0; i < dimensions; i++) {
-        const row = [];
-        for (let j = 0; j < dimensions; j++) {
-            const cellIndex = i * dimensions + j;
-            row.push(mapConfiguration[cellIndex] === 'wall' ? '-' : ' ');
-        }
-        formattedMap.push(row);
-    }
-
-    return formattedMap;
-}
-
-// Call the function and log the result to see the formatted map
-const formattedMap = getFormattedMapConfiguration();
-if (formattedMap) {
-    formattedMap.forEach(row => console.log(row.join('')));
-}
-
-console.log(formattedMap);
-
-let myMap = JSON.parse(localStorage.getItem('mapConfiguration'))
+const myMap = JSON.parse(localStorage.getItem('mapConfiguration'));
 
 const mapCollection = {
-  map1: [
-    myMap]
-   // Map 1 original map
-// ['-', ' ', '-', '-', '-', '-', '-', '-', '-', '-'],
-// ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-// ['-', ' ', '-', '-', '-', ' ', ' ', '-', ' ', '-'],
-// ['-', ' ', '-', ' ', ' ', ' ', '-', '-', ' ', '-'],
-// ['-', ' ', '-', ' ', '-', ' ', ' ', '-', ' ', '-'],
-// ['-', ' ', '-', ' ', '-', '-', ' ', '-', ' ', '-'],
-// ['-', ' ', '-', ' ', ' ', ' ', ' ', '-', ' ', '-'],
-// ['-', ' ', '-', '-', ' ', '-', '-', '-', ' ', '-'],
-// ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-// ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-']]
-// ['-', ' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
-//   ['-', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//   ['-', ' ', '-', '-', ' ', ' ', ' ', ' ', '-', ' ', ' ', '-', '-', '-', '-', ' ', '-'],
-//   ['-', ' ', '-', ' ', ' ', '-', '-', '-', '-', '-', ' ', '-', ' ', ' ', ' ', ' ', '-'],
-//   ['-', ' ', '-', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', '-', ' ', '-', '-', '-', '-'],
-//   ['-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', '-', '-', '-', ' ', ' ', ' ', ' ', '-'],
-//   ['-', ' ', ' ', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', '-', '-', '-', '-', ' ', '-'],
-//   ['-', ' ', ' ', ' ', '-', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//   ['-', ' ', '-', '-', '-', '-', ' ', '-', '-', '-', ' ', '-', ' ', '-', '-', '-', '-'],
-//   ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', '-', ' ', ' ', ' ', ' ', '-'],
-//   ['-', ' ', '-', '-', '-', '-', '-', ' ', ' ', ' ', '-', '-', '-', '-', '-', ' ', '-'],
-//   ['-', ' ', '-', ' ', ' ', ' ', '-', '-', ' ', '-', '-', ' ', ' ', ' ', ' ', ' ', '-'],
-//   ['-', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-', '-', '-', '-', '-'],
-//   ['-', ' ', '-', ' ', '-', ' ', '-', '-', '-', '-', '-', ' ', ' ', ' ', ' ', ' ', '-'],
-//   ['-', ' ', '-', ' ', '-', '-', '-', ' ', ' ', ' ', '-', ' ', '-', '-', '-', ' ', '-'],
-//   ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//   ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
-// ]
+  map1: myMap
+
 };
 
 //------------------------------------------------UPDATED CODE
