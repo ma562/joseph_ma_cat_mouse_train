@@ -132,7 +132,7 @@ class UnionFind {
 
 function isMouseInDeadEnd(mapConfiguration, mouseRow, mouseCol, catRow, catCol) {
     const dimensions = mapConfiguration.length;
-    const uf = new UnionFind(dimensions * dimensions);
+    const uf = new UnionFind((dimensions - 2) * (dimensions - 2));
 
     const getIndex = (row, col) => (row - 1) * (dimensions - 2) + (col - 1);
 
