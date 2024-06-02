@@ -59,6 +59,8 @@ if (formattedMap) {
     formattedMap.forEach(row => console.log(row.join(' ')));
 }
 
+console.log(formattedMap);
+
 const mapCollection = {
   map1: [
     formattedMap]
