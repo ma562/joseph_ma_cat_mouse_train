@@ -136,7 +136,7 @@ function isMouseInDeadEnd(mapConfiguration, mouseRow, mouseCol, catRow, catCol) 
 
     const getIndex = (row, col) => (row - 1) * (dimensions - 2) + (col - 1);
 
-    // Connect adjacent empty cells, treating the cat's position as a wall
+    // Connect adjacent empty cells, treating walls and the cat's position as barriers
     for (let row = 1; row < dimensions - 1; row++) {
         for (let col = 1; col < dimensions - 1; col++) {
             if (mapConfiguration[row][col] === ' ' && !(row === catRow && col === catCol)) {
@@ -171,7 +171,6 @@ function isMouseInDeadEnd(mapConfiguration, mouseRow, mouseCol, catRow, catCol) 
 
     return true; // Mouse is in a dead end
 }
-
 //------------------------------------------------UPDATED CODE
 
 function get_discrete_X(position_x) {
