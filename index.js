@@ -100,6 +100,78 @@ function updateEpsilon() {
   document.getElementById('epsilon-value').textContent = epsilon.toFixed(6);
 }
 
+class UnionFind {
+    constructor(size) {
+        this.parent = Array.from({ length: size }, (_, i) => i);
+        this.rank = Array(size).fill(0);
+    }
+
+    find(x) {
+        if (this.parent[x] !== x) {
+            this.parent[x] = this.find(this.parent[x]);
+        }
+        return this.parent[x];
+    }
+
+    union(x, y) {
+        const rootX = this.find(x);
+        const rootY = this.find(y);
+
+        if (rootX !== rootY) {
+            if (this.rank[rootX] > this.rank[rootY]) {
+                this.parent[rootY] = rootX;
+            } else if (this.rank[rootX] < this.rank[rootY]) {
+                this.parent[rootX] = rootY;
+            } else {
+                this.parent[rootY] = rootX;
+                this.rank[rootX] += 1;
+            }
+        }
+    }
+}
+
+function isMouseInDeadEnd(mapConfiguration, mouseRow, mouseCol, catRow, catCol) {
+    const dimensions = mapConfiguration.length;
+    const uf = new UnionFind(dimensions * dimensions);
+
+    const getIndex = (row, col) => (row - 1) * (dimensions - 2) + (col - 1);
+
+    // Connect adjacent empty cells, treating the cat's position as a wall
+    for (let row = 1; row < dimensions - 1; row++) {
+        for (let col = 1; col < dimensions - 1; col++) {
+            if (mapConfiguration[row][col] === ' ' && !(row === catRow && col === catCol)) {
+                if (mapConfiguration[row - 1][col] === ' ' && !(row - 1 === catRow && col === catCol)) {
+                    uf.union(getIndex(row, col), getIndex(row - 1, col));
+                }
+                if (mapConfiguration[row + 1][col] === ' ' && !(row + 1 === catRow && col === catCol)) {
+                    uf.union(getIndex(row, col), getIndex(row + 1, col));
+                }
+                if (mapConfiguration[row][col - 1] === ' ' && !(row === catRow && col - 1 === catCol)) {
+                    uf.union(getIndex(row, col), getIndex(row, col - 1));
+                }
+                if (mapConfiguration[row][col + 1] === ' ' && !(row === catRow && col + 1 === catCol)) {
+                    uf.union(getIndex(row, col), getIndex(row, col + 1));
+                }
+            }
+        }
+    }
+
+    const mouseIndex = getIndex(mouseRow, mouseCol);
+
+    // Check if the mouse is connected to any other path
+    for (let row = 1; row < dimensions - 1; row++) {
+        for (let col = 1; col < dimensions - 1; col++) {
+            if (mapConfiguration[row][col] === ' ' && !(row === mouseRow && col === mouseCol)) {
+                if (uf.find(mouseIndex) === uf.find(getIndex(row, col))) {
+                    return false; // Mouse is connected to other paths
+                }
+            }
+        }
+    }
+
+    return true; // Mouse is in a dead end
+}
+
 //------------------------------------------------UPDATED CODE
 
 function get_discrete_X(position_x) {
@@ -708,7 +780,7 @@ function getExitDirection(exitRow, exitCol, mouseRow, mouseCol) {
 
 //MONITOR OSCILLATIONS IN THE RL ENVIRONMENT
 
-let maxHistory = 15;
+let maxHistory = max_distance;  //change later if want
 let stateHistory = [];
 
 function updateStateHistory(stateHistory, newState, maxHistory) {
@@ -1413,17 +1485,26 @@ function animate() {
 
     //RL REWARDS -----------------------------------------------------------------------------
 
+    //     const mapConfiguration = [
+    //     ['-', ' ', '-', '-', '-', '-', '-', '-', '-', '-'],
+    //     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    //     ['-', ' ', '-', '-', '-', ' ', ' ', '-', ' ', '-'],
+    //     ['-', ' ', '-', ' ', ' ', ' ', '-', '-', ' ', '-'],
+    //     ['-', ' ', '-', ' ', '-', ' ', ' ', '-', ' ', '-'],
+    //     ['-', ' ', '-', ' ', '-', '-', ' ', '-', ' ', '-'],
+    //     ['-', ' ', '-', ' ', ' ', ' ', ' ', '-', ' ', '-'],
+    //     ['-', ' ', '-', '-', ' ', '-', '-', '-', ' ', '-'],
+    //     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    //     ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+    // ];
 
-//     const KEEP_DISTANCE_EXIT_ATTEMPT = max_distance  //maintain distance from cat AND get closer to exit
-// const KEEP_DISTANCE = max_distance / 2  //maintain distance from cat AND get further/maintain distance from exit
-// const ESCAPE_ATTEMPT = max_distance   //mouse gets closer to cat, exit gets closer to mouse, exit is closer to mouse than cat is to mouse
-// const CAUGHT = -max_distance * 3
-// const ESCAPE = max_distance * 3
-// let epsilon = 0.9
-// let EPS_DECAY = 0.9998
-// const LEARNING_RATE = 0.1
-// const DISCOUNT = 0.95
-// let EPISODES = 0;
+    // const mouseRow = 1;
+    // const mouseCol = 1;
+    // const catRow = 4;
+    // const catCol = 4;
+
+    const inDeadEnd = isMouseInDeadEnd(myMap, get_discrete_Y(player.position.y), get_discrete_X(player.position.x), get_discrete_Y(myCats[0].position.y), get_discrete_X(myCats[0].position.x));
+    console.log('Mouse in dead end:', inDeadEnd);
 
     let reward;
     //once we have a feedback of our old distance from cat
