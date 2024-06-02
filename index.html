@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat and Mouse Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header id="top-header">
+        <div id="title-container">
+            <h1>Cat and Mouse 2: Reinforcement Learning - a project by Joseph Ma</h1>
+        </div>
+        <div class="header-item">
+            <label for="speed-slider">Movement Speed</label>
+            <input type="range" id="speed-slider" min="1" max="35" value="15">
+            <span id="speed-value">15</span>
+        </div>
+        <div class="header-item">
+            <label>Current Epsilon</label>
+            <span id="epsilon-value">0.9</span>
+        </div>
+        <div class="header-item">
+            <label>Current Training Episode</label>
+            <span id="episode-value">0</span>
+        </div>
+        <div class="header-item">
+            <label>Exploration / Exploitation</label>
+            <div class="indicator-container">
+                <div class="circle" id="exploration-circle"></div>
+                <div class="circle" id="exploitation-circle"></div>
+            </div>
+        </div>
+        <div class="header-item">
+            <label>Prey Status</label>
+            <div class="indicator-container">
+                <div class="circle" id="escaped-circle"></div>
+                <div class="circle" id="living-circle"></div>
+                <div class="circle" id="dead-circle"></div>
+            </div>
+        </div>
+        <div class="header-item">
+            <label>Phase</label>
+            <button id="phase-switch">Training</button>
+        </div>
+    </header>
+    <canvas></canvas>
+
+    <script src="index.js"></script>
+</body>
+</html>
