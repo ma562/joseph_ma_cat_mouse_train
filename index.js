@@ -62,9 +62,11 @@ if (formattedMap) {
 
 console.log(formattedMap);
 
+let myMap = JSON.parse(localStorage.getItem('mapConfiguration'))
+
 const mapCollection = {
   map1: [
-    formattedMap]
+    myMap]
    // Map 1 original map
 // ['-', ' ', '-', '-', '-', '-', '-', '-', '-', '-'],
 // ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
