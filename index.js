@@ -30,7 +30,9 @@ let success = 0;
 // Declare numCats as a global variable
 window.numCats = numCats;
 
-const myMap = JSON.parse(localStorage.getItem('mapConfiguration'));
+let myMap = JSON.parse(localStorage.getItem('mapConfiguration'));
+myMap[0][1] = ' ';
+console.log(myMap);
 
 const mapCollection = {
   map1: myMap
