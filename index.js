@@ -100,77 +100,6 @@ function updateEpsilon() {
   document.getElementById('epsilon-value').textContent = epsilon.toFixed(6);
 }
 
-class UnionFind {
-    constructor(size) {
-        this.parent = Array.from({ length: size }, (_, i) => i);
-        this.rank = Array(size).fill(0);
-    }
-
-    find(x) {
-        if (this.parent[x] !== x) {
-            this.parent[x] = this.find(this.parent[x]);
-        }
-        return this.parent[x];
-    }
-
-    union(x, y) {
-        const rootX = this.find(x);
-        const rootY = this.find(y);
-
-        if (rootX !== rootY) {
-            if (this.rank[rootX] > this.rank[rootY]) {
-                this.parent[rootY] = rootX;
-            } else if (this.rank[rootX] < this.rank[rootY]) {
-                this.parent[rootX] = rootY;
-            } else {
-                this.parent[rootY] = rootX;
-                this.rank[rootX] += 1;
-            }
-        }
-    }
-}
-
-function isMouseInDeadEnd(mapConfiguration, mouseRow, mouseCol, catRow, catCol) {
-    const dimensions = mapConfiguration.length;
-    const uf = new UnionFind((dimensions - 2) * (dimensions - 2));
-
-    const getIndex = (row, col) => (row - 1) * (dimensions - 2) + (col - 1);
-
-    // Connect adjacent empty cells, treating walls and the cat's position as barriers
-    for (let row = 1; row < dimensions - 1; row++) {
-        for (let col = 1; col < dimensions - 1; col++) {
-            if (mapConfiguration[row][col] === ' ' && !(row === catRow && col === catCol)) {
-                if (mapConfiguration[row - 1][col] === ' ' && !(row - 1 === catRow && col === catCol)) {
-                    uf.union(getIndex(row, col), getIndex(row - 1, col));
-                }
-                if (mapConfiguration[row + 1][col] === ' ' && !(row + 1 === catRow && col === catCol)) {
-                    uf.union(getIndex(row, col), getIndex(row + 1, col));
-                }
-                if (mapConfiguration[row][col - 1] === ' ' && !(row === catRow && col - 1 === catCol)) {
-                    uf.union(getIndex(row, col), getIndex(row, col - 1));
-                }
-                if (mapConfiguration[row][col + 1] === ' ' && !(row === catRow && col + 1 === catCol)) {
-                    uf.union(getIndex(row, col), getIndex(row, col + 1));
-                }
-            }
-        }
-    }
-
-    const mouseIndex = getIndex(mouseRow, mouseCol);
-
-    // Check if the mouse is connected to any other path
-    for (let row = 1; row < dimensions - 1; row++) {
-        for (let col = 1; col < dimensions - 1; col++) {
-            if (mapConfiguration[row][col] === ' ' && !(row === mouseRow && col === mouseCol)) {
-                if (uf.find(mouseIndex) === uf.find(getIndex(row, col))) {
-                    return false; // Mouse is connected to other paths
-                }
-            }
-        }
-    }
-
-    return true; // Mouse is in a dead end
-}
 //------------------------------------------------UPDATED CODE
 
 function get_discrete_X(position_x) {
@@ -1483,27 +1412,6 @@ function animate() {
     }
 
     //RL REWARDS -----------------------------------------------------------------------------
-
-    //     const mapConfiguration = [
-    //     ['-', ' ', '-', '-', '-', '-', '-', '-', '-', '-'],
-    //     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-    //     ['-', ' ', '-', '-', '-', ' ', ' ', '-', ' ', '-'],
-    //     ['-', ' ', '-', ' ', ' ', ' ', '-', '-', ' ', '-'],
-    //     ['-', ' ', '-', ' ', '-', ' ', ' ', '-', ' ', '-'],
-    //     ['-', ' ', '-', ' ', '-', '-', ' ', '-', ' ', '-'],
-    //     ['-', ' ', '-', ' ', ' ', ' ', ' ', '-', ' ', '-'],
-    //     ['-', ' ', '-', '-', ' ', '-', '-', '-', ' ', '-'],
-    //     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-    //     ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
-    // ];
-
-    // const mouseRow = 1;
-    // const mouseCol = 1;
-    // const catRow = 4;
-    // const catCol = 4;
-
-    const inDeadEnd = isMouseInDeadEnd(myMap, get_discrete_Y(player.position.y), get_discrete_X(player.position.x), get_discrete_Y(myCats[0].position.y), get_discrete_X(myCats[0].position.x));
-    console.log('Mouse in dead end:', inDeadEnd);
 
     let reward;
     //once we have a feedback of our old distance from cat
