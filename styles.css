@@ -78,6 +78,10 @@ body {
     background-color: red;
 }
 
+.circle.active#end-status {
+    background-color: red;
+}
+
 #phase-switch {
     padding: 5px 10px;
     font-size: 14px;
@@ -92,6 +96,7 @@ body {
 #phase-switch:hover {
     background-color: #0056b3;
 }
+
 
 #scoreboard {
     font-family: Arial, sans-serif;

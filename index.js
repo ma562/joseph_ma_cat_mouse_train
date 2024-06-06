@@ -18,6 +18,9 @@ let EPISODES = 0;
 let preyStatus = "living";
 let TRAINING = true;
 let timeoutCtr = 0;
+let deadEnd = false;
+let old_dead_end = false;
+let old_old_dead_end = false;
 
 // Determine the value of numCats based on the conditions
 let numCats = 1;
@@ -32,12 +35,234 @@ window.numCats = numCats;
 
 let myMap = JSON.parse(localStorage.getItem('mapConfiguration'));
 myMap[0][1] = ' ';
+
+myMap = [
+['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
+  ['-', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+  ['-', ' ', '-', ' ', ' ', ' ', '-', ' ', '-', ' ', ' ', '-', '-', '-', '-', ' ', '-'],
+  ['-', ' ', '-', ' ', '-', '-', '-', '-', '-', '-', ' ', '-', ' ', ' ', ' ', ' ', '-'],
+  ['-', ' ', '-', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', '-', ' ', '-', '-', '-', '-'],
+  ['-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', '-', '-', '-', ' ', ' ', ' ', ' ', '-'],
+  ['-', ' ', '-', '-', '-', ' ', '-', ' ', ' ', ' ', ' ', '-', '-', '-', '-', '-', '-'],
+  ['-', ' ', '-', ' ', '-', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+  ['-', ' ', '-', ' ', '-', '-', ' ', '-', '-', '-', '-', '-', ' ', '-', '-', '-', '-'],
+  ['-', ' ', ' ', ' ', '-', ' ', ' ', ' ', '-', ' ', ' ', '-', ' ', '-', ' ', ' ', '-'],
+  ['-', ' ', '-', ' ', '-', '-', '-', ' ', ' ', ' ', '-', '-', ' ', '-', '-', ' ', '-'],
+  ['-', ' ', '-', ' ', ' ', ' ', '-', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+  ['-', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', '-', '-', '-', '-', ' ', '-', '-', '-'],
+  ['-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', ' ', '-', ' ', '-'],
+  ['-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', '-', '-', '-', '-', ' ', '-'],
+  ['-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+  ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
+]
 console.log(myMap);
 
 const mapCollection = {
   map1: myMap
 
 };
+
+//DEAD END CODE--------------------------------------------------
+function countPaths(grid, startRow, startCol) {
+    let visited = Array.from({ length: grid.length }, () => Array(grid[0].length).fill(false));
+    let count = 0;
+
+    function dfs(row, col) {
+        if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length) return;
+        if (grid[row][col] === '-' || visited[row][col]) return;
+
+        visited[row][col] = true;
+        count++;
+
+        dfs(row + 1, col);
+        dfs(row - 1, col);
+        dfs(row, col + 1);
+        dfs(row, col - 1);
+    }
+
+    dfs(startRow, startCol);
+    return count;
+}
+
+function isConnected(grid, startRow, startCol, wallRow, wallCol) {
+    if (grid[wallRow][wallCol] === '-') return true;
+
+    let tempGrid = grid.map(row => row.slice());
+    tempGrid[wallRow][wallCol] = '-';
+
+    const originalPathsCount = countPaths(grid, startRow, startCol);
+    const newPathsCount = countPaths(tempGrid, startRow, startCol);
+
+    // Decrement the original paths count by 1 if we placed a wall on a path
+    if (grid[wallRow][wallCol] === ' ') {
+        return originalPathsCount - 1 === newPathsCount;
+    }
+
+    return originalPathsCount === newPathsCount;
+}
+
+function checkDisconnectivity(grid) {
+    const rows = grid.length;
+    const cols = grid[0].length;
+    const result = Array.from({ length: rows }, () => Array(cols).fill(0));
+
+    const directions = [
+        [1, 0],  // down
+        [-1, 0], // up
+        [0, 1],  // right
+        [0, -1]  // left
+    ];
+
+    for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+            if (grid[row][col] === '-') {
+                result[row][col] = -1;
+                continue;
+            }
+
+            let isDisconnected = false;
+
+            for (const [dr, dc] of directions) {
+                const wallRow = row + dr;
+                const wallCol = col + dc;
+
+                if (
+                    wallRow >= 0 && wallRow < rows &&
+                    wallCol >= 0 && wallCol < cols &&
+                    grid[wallRow][wallCol] === ' '
+                ) {
+                    if (!isConnected(grid, row, col, wallRow, wallCol)) {
+                        isDisconnected = true;
+                        break;
+                    }
+                }
+            }
+
+            result[row][col] = isDisconnected ? 1 : 0;
+        }
+    }
+
+    return result;
+}
+
+function isDisconnected(grid, startRow, startCol, wallRow, wallCol) {           //returns 1 if we are dead end, else 0
+    // Create a copy of the grid
+    let tempGrid = grid.map(row => row.slice());
+    
+    // Place the imaginary wall
+    tempGrid[wallRow][wallCol] = -1;
+
+    // Define directions for movement (down, up, right, left)
+    const directions = [
+        [1, 0],  // down
+        [-1, 0], // up
+        [0, 1],  // right
+        [0, -1]  // left
+    ];
+
+    function dfs(row, col) {
+        if (row < 0 || row >= tempGrid.length || col < 0 || col >= tempGrid[0].length) return false;
+        if (tempGrid[row][col] === -1 || tempGrid[row][col] === -2) return false;
+        
+        // If we found a 0 cell, return true
+        if (tempGrid[row][col] === 0) {
+            return true;
+        }
+
+        // Mark the cell as visited by changing its value to something other than 0 or -1
+        tempGrid[row][col] = -2;
+
+        for (const [dr, dc] of directions) {
+            const newRow = row + dr;
+            const newCol = col + dc;
+            if (dfs(newRow, newCol)) return true;
+        }
+
+        return false;
+    }
+
+    // Check if the coordinate of interest can reach any 0s
+    return dfs(startRow, startCol) ? 0 : 1;
+}
+
+function createDisconnectivityTable(grid) {
+    const rows = grid.length;
+    const cols = grid[0].length;
+    const result = [];
+
+    const directions = {
+        up: [-1, 0],
+        down: [1, 0],
+        left: [0, -1],
+        right: [0, 1]
+    };
+
+    for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+            if (grid[row][col] === 1) {
+                let rowResult = {
+                    coordinate: [row, col],
+                    up: 0,
+                    down: 0,
+                    left: 0,
+                    right: 0
+                };
+
+                for (const [direction, [dr, dc]] of Object.entries(directions)) {
+                    const wallRow = row + dr;
+                    const wallCol = col + dc;
+
+                    if (wallRow >= 0 && wallRow < rows && wallCol >= 0 && wallCol < cols && grid[row][col] !== -1) {
+                        rowResult[direction] = isDisconnected(grid, row, col, wallRow, wallCol);
+                    }
+                }
+
+                result.push(rowResult);
+            }
+        }
+    }
+
+    return result;
+}
+
+function getDisconnectivityValue(disconnectivityTable, row, column, directionOfInterest) {
+    // Define direction mapping
+    const directionMap = ['up', 'right', 'left', 'down'];
+
+    //change this to account for the disconnectivity table not cutting off border walls
+    row += 1;
+    column += 1;
+    
+    // Check if the direction of interest is valid
+    if (directionOfInterest < 0 || directionOfInterest > 3) {
+        throw new Error('Invalid direction of interest');
+    }
+
+    // Get the string representation of the direction
+    const direction = directionMap[directionOfInterest];
+
+    // Iterate through the disconnectivity table to find the coordinates of interest
+    for (let i = 0; i < disconnectivityTable.length; i++) {
+        const rowEntry = disconnectivityTable[i];
+        if (rowEntry.coordinate[0] === row && rowEntry.coordinate[1] === column) {
+            // Return the value for the direction of interest
+            return rowEntry[direction];
+        }
+    }
+
+    // If the coordinates are not found in the table, return 0
+    return 0;
+}
+
+let deadMap = checkDisconnectivity(myMap);
+deadMap[1][1] = 0;
+let disconnect = createDisconnectivityTable(deadMap);
+
+console.log(deadMap);
+console.log(disconnect);
+
+
+//-------------------------------------------------------------
 
 //------------------------------------------------UPDATED CODE
 // Event listeners for the UI elements
@@ -98,6 +323,15 @@ function updateEpisode() {
 
 function updateEpsilon() {
   document.getElementById('epsilon-value').textContent = epsilon.toFixed(6);
+}
+
+function updateDeadEnd() {
+  if (deadEnd === 1) {
+    document.getElementById('end-status').classList.add('active');
+  }
+  else {
+    document.getElementById('end-status').classList.remove('active');
+  }
 }
 
 //------------------------------------------------UPDATED CODE
@@ -677,7 +911,6 @@ const DISCOUNT = 0.95
 
 //GET DIRECTION
 function getCatDirection(mouseRow, mouseCol, catRow, catCol) {
-
   if (catRow < mouseRow) {
     return 0; // Cat is above the mouse, so it's coming from 'up'
   } else if (catCol > mouseCol) {
@@ -837,23 +1070,6 @@ for (let rowIndex = 0; rowIndex < newPathMatrix.length; rowIndex++) {
 // Possible directions (N, E, S, W) for cat and exit
 const directions = [0, 1, 2, 3]; 
 
-// Create the extended state space mapping
-// let extendedStateSpaceMapping = {};
-// let stateIndex = 0;
-// for (let row = 1; row < map.length - 1; row++) {
-//   for (let col = 1; col < map[row].length - 1; col++) {
-//     if (map[row][col] === ' ') {
-//       for (let catDirection = 0; catDirection < directions.length; catDirection++) {
-//         for (let distance = 1; distance <= max_distance; distance++) {
-//           for (let exitDirection = 0; exitDirection < directions.length; exitDirection++) {
-//             let key = `${row - 1},${col - 1}_${catDirection}_${distance}_${exitDirection}`;
-//             extendedStateSpaceMapping[key] = stateIndex++;
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
 
 let extendedStateSpaceMapping = {};
 let stateIndex = 0;
@@ -912,23 +1128,6 @@ function getBestAction(Qtable, stateKey) {
   return bestAction; // Returns the index of the action with the highest Q-value
 }
 
-
-//this function allows us to grab the best action from the designated state.
-// function getBestAction(Qtable, stateDirectionKey) {
-//   const actionsQValues = Qtable[stateDirectionKey];
-//   if (!actionsQValues) {
-//     return null; // or some error handling if the state does not exist
-//   }
-//   let maxQValue = actionsQValues[0];
-//   let bestAction = 0;
-//   for (let action = 1; action < actionsQValues.length; action++) {
-//     if (actionsQValues[action] > maxQValue) {
-//       maxQValue = actionsQValues[action];
-//       bestAction = action;
-//     }
-//   }
-//   return bestAction; // Returns the index of the action with the highest Q-value
-// }
 
 //STATE SPACE END -----------------------------------------------------------------------------
 
@@ -1081,6 +1280,8 @@ function animate() {
   let new_cat_distance;   //THE NEW DISTANCE from cat to mouse
   let old_exit_distance;  //THE PREVIOUS DISTANCE from exit to mouse
   let new_exit_distance   //THE NEW DISTANCE from exit to mouse
+  // let old_dead_end;
+  // let old_old_dead_end;
   let action;    
   let row_incoming;
   let col_incoming;
@@ -1415,50 +1616,110 @@ function animate() {
 
     let reward;
     //once we have a feedback of our old distance from cat
+    
+
     new_cat_distance = myCats[0].rows.length;
     new_exit_distance = newPathMatrix[get_discrete_Y(player.position.y)][get_discrete_X(player.position.x)];
     let cat_to_exit = newPathMatrix[get_discrete_Y(myCats[0].position.y)][get_discrete_X(myCats[0].position.x)];
 
-    if ((old_cat_distance === new_cat_distance) && (new_exit_distance < old_exit_distance)) {
-      //the mouse maintains distance from cat
-      //the mouse gets closer to exit
-      reward = KEEP_DISTANCE_EXIT_ATTEMPT;
-    }
-    else if(old_cat_distance === new_cat_distance && (new_exit_distance >= old_exit_distance)) {
-      //the mouse maintains distance from cat
-      //the mouse gets further or same distance from exit
-      reward = KEEP_DISTANCE;
-    }
-    else if((old_cat_distance > new_cat_distance) && (new_exit_distance < old_exit_distance) && ((new_exit_distance + 1) < cat_to_exit)) {
-      //the mouse gets closer to cat
-      //the exit got closer to mouse
-      //the exit is closer to mouse than cat is to mouse
-      reward = ESCAPE_ATTEMPT;
+    let row_incoming = myCats[0].rows[myCats[0].rows.length - 3];
+    let col_incoming = myCats[0].col[myCats[0].col.length - 3];
+    let mouse_row = get_discrete_Y(player.position.y);
+    let mouse_col = get_discrete_X(player.position.x);
+
+    if(myCats[0].rows.length === 2) {
+      row_incoming = get_discrete_Y(myCats[0].position.y);
+      col_incoming = get_discrete_X(myCats[0].position.x);
     }
     else {
-      //the cat got closer (penalize harder if the cat is close.)
-      reward = -(max_distance - myCats[0].rows.length);
+      row_incoming = myCats[0].rows[myCats[0].rows.length - 3];
+      col_incoming = myCats[0].col[myCats[0].col.length - 3];
     }
+
+    let direction = getCatDirection(mouse_row, mouse_col, row_incoming, col_incoming);
+    deadEnd = getDisconnectivityValue(disconnect, mouse_row, mouse_col, direction);
+    updateDeadEnd();
+    //console.log(type(deadEnd));
+    //console.log(deadEnd);
+
+    if((deadEnd == old_dead_end) && !deadEnd) {
+      //we are not in a dead end and we did not change dead end status
+      if ((old_cat_distance === new_cat_distance) && (new_exit_distance < old_exit_distance)) {
+        //the mouse maintains distance from cat
+        //the mouse gets closer to exit
+        reward = KEEP_DISTANCE_EXIT_ATTEMPT;
+      }
+      else if(old_cat_distance === new_cat_distance && (new_exit_distance >= old_exit_distance)) {
+        //the mouse maintains distance from cat
+        //the mouse gets further or same distance from exit
+        reward = KEEP_DISTANCE;
+      }
+      else if((old_cat_distance > new_cat_distance) && (new_exit_distance < old_exit_distance) && ((new_exit_distance + 1) < cat_to_exit)) {
+        //the mouse gets closer to cat
+        //the exit got closer to mouse
+        //the exit is closer to mouse than cat is to mouse
+        reward = ESCAPE_ATTEMPT;
+      }
+      else {
+        //the cat got closer (penalize harder if the cat is close.)
+        reward = -(max_distance - myCats[0].rows.length);
+      } 
+    }
+    else if ((deadEnd == old_dead_end) && deadEnd) {
+      //we are in a dead end and we did not change dead end status
+      if(old_cat_distance === new_cat_distance) {
+        //the mouse maintains distance from cat
+        //penalize - because we have to escape
+        reward = -max_distance; //-(max_distance - myCats[0].rows.length);
+      }
+      else if(old_cat_distance - 1 == new_cat_distance) {
+        //the mouse is basically standing there waiting to get caught SMH
+        reward = -max_distance;
+      }
+      else {
+        reward = max_distance;
+      }
+    }
+    else {
+      //we changed dead end status
+      if(deadEnd) {
+        reward = CAUGHT;    //penalize for switching to dead end status
+      }
+      else {
+        reward = ESCAPE;
+      }
+    }
+    
 
     if(restart) {
       //THE MOUSE GOT CAUGHT
+      // if(old_dead_end) {
+      //   //it's ok to get caught when trying to escape
+      //   reward = max_distance;
+      // }
+      // else {
+      //   reward = CAUGHT;
+      // }
+      console.log(deadEnd);
+      console.log(old_dead_end);
+      console.log(old_old_dead_end);
       reward = CAUGHT;
     }
 
     if(restart2) {
+      console.log(deadEnd);
+      console.log(old_dead_end);
+      console.log(old_old_dead_end);
       reward = ESCAPE;
     }
-
-    let row_incoming = myCats[0].rows[myCats[0].rows.length - 2];
-    let col_incoming = myCats[0].col[myCats[0].col.length - 2];
-    let mouse_row = get_discrete_Y(player.position.y);
-    let mouse_col = get_discrete_X(player.position.x);
+    console.log(reward);
     let new_q;
 
-    let direction = getCatDirection(mouse_row, mouse_col, row_incoming, col_incoming)
     let new_stateIndex = getStateIndex(mouse_row, mouse_col, direction, myCats[0].rows.length)
+    //console.log(reward);
 
     let current_q = Qtable[state_Index][action];
+    //console.log(current_q);
 
     let max_future_q = getBestAction(Qtable, new_stateIndex);
 
@@ -1468,6 +1729,7 @@ function animate() {
     }
     else {
       new_q = (1 - LEARNING_RATE) * current_q + LEARNING_RATE * (reward + DISCOUNT * max_future_q);
+      //console.log(new_q);
     }
 
     if(TRAINING) {
@@ -1476,6 +1738,8 @@ function animate() {
 
     old_cat_distance = new_cat_distance;    //SAVE THIS VALUE FOR NEXT ITERATION
     old_exit_distance = new_exit_distance;  
+    old_old_dead_end = old_dead_end;
+    old_dead_end = deadEnd;
 
     if(restart || restart2) {
       timeoutCtr = 0;
@@ -1512,3 +1776,8 @@ function animate() {
 
 }
 animate()
+
+
+
+
+
