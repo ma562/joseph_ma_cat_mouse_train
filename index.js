@@ -1449,7 +1449,6 @@ function animate() {
     let mouse_col = get_discrete_X(player.position.x);
 
     direction = getCatDirection(mouse_row, mouse_col, row_incoming, col_incoming)
-    exit_
     //getStateIndex(row, col, catDirection, mouseCatDistance, exitDirection)
 
     state_Index = getStateIndex(mouse_row, mouse_col, direction, myCats[0].rows.length)
