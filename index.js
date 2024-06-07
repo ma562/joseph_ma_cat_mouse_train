@@ -1777,19 +1777,19 @@ function animate() {
         //the mouse gets closer to exit
         reward = KEEP_DISTANCE_EXIT_ATTEMPT;
       }
+      else if((old_cat_distance - 1 == new_cat_distance) && (new_exit_distance < old_exit_distance) && ((new_exit_distance) < cat_to_exit)) {
+        //not putting full effort into escaping.
+        reward = -(max_distance - myCats[0].rows.length);
+      }
       else if(old_cat_distance === new_cat_distance && (new_exit_distance >= old_exit_distance)) {
         //the mouse maintains distance from cat
         //the mouse gets further or same distance from exit
         reward = KEEP_DISTANCE;
 
         //the mouse was actually close enough to the exit to escape but did not take the opportunity to do so
-        if((new_exit_distance) < cat_to_exit) {
+        if((old_exit_distance === cat_to_exit)) {
           reward = -(max_distance - myCats[0].rows.length);
         }
-      }
-      else if((old_cat_distance - 1 == new_cat_distance) && (new_exit_distance < old_exit_distance) && ((new_exit_distance) < cat_to_exit)) {
-        //not putting full effort into escaping.
-        reward = -(max_distance - myCats[0].rows.length);
       }
       else if((old_cat_distance > new_cat_distance) && (new_exit_distance < old_exit_distance) && ((new_exit_distance) < cat_to_exit)) {
         //the mouse gets closer to cat
