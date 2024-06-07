@@ -35,27 +35,46 @@ let episodeRewards = 0;
 window.numCats = numCats;
 
 let myMap = JSON.parse(localStorage.getItem('mapConfiguration'));
-myMap[0][1] = ' ';
 
-myMap = [
-['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
-  ['-', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-  ['-', ' ', '-', ' ', ' ', ' ', '-', ' ', '-', ' ', ' ', '-', '-', '-', '-', ' ', '-'],
-  ['-', ' ', '-', ' ', '-', '-', '-', '-', '-', '-', ' ', '-', ' ', ' ', ' ', ' ', '-'],
-  ['-', ' ', '-', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', '-', ' ', '-', '-', '-', '-'],
-  ['-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', '-', '-', '-', ' ', ' ', ' ', ' ', '-'],
-  ['-', ' ', '-', '-', '-', ' ', '-', ' ', ' ', ' ', ' ', '-', '-', '-', '-', '-', '-'],
-  ['-', ' ', '-', ' ', '-', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-  ['-', ' ', '-', ' ', '-', '-', ' ', '-', '-', '-', '-', '-', ' ', '-', '-', '-', '-'],
-  ['-', ' ', ' ', ' ', '-', ' ', ' ', ' ', '-', ' ', ' ', '-', ' ', '-', ' ', ' ', '-'],
-  ['-', ' ', '-', ' ', '-', '-', '-', ' ', ' ', ' ', '-', '-', ' ', '-', '-', ' ', '-'],
-  ['-', ' ', '-', ' ', ' ', ' ', '-', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-  ['-', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', '-', '-', '-', '-', ' ', '-', '-', '-'],
-  ['-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', ' ', '-', ' ', '-'],
-  ['-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', '-', '-', '-', '-', ' ', '-'],
-  ['-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-  ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
-]
+// myMap = [
+// ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
+//   ['-', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//   ['-', ' ', '-', ' ', ' ', ' ', '-', ' ', '-', ' ', ' ', '-', '-', '-', '-', ' ', '-'],
+//   ['-', ' ', '-', ' ', '-', '-', '-', '-', '-', '-', ' ', '-', ' ', ' ', ' ', ' ', '-'],
+//   ['-', ' ', '-', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', '-', ' ', '-', '-', '-', '-'],
+//   ['-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', '-', '-', '-', ' ', ' ', ' ', ' ', '-'],
+//   ['-', ' ', '-', '-', '-', ' ', '-', ' ', ' ', ' ', ' ', '-', '-', '-', '-', '-', '-'],
+//   ['-', ' ', '-', ' ', '-', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//   ['-', ' ', '-', ' ', '-', '-', ' ', '-', '-', '-', '-', '-', ' ', '-', '-', '-', '-'],
+//   ['-', ' ', ' ', ' ', '-', ' ', ' ', ' ', '-', ' ', ' ', '-', ' ', '-', ' ', ' ', '-'],
+//   ['-', ' ', '-', ' ', '-', '-', '-', ' ', ' ', ' ', '-', '-', ' ', '-', '-', ' ', '-'],
+//   ['-', ' ', '-', ' ', ' ', ' ', '-', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//   ['-', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', '-', '-', '-', '-', ' ', '-', '-', '-'],
+//   ['-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', ' ', '-', ' ', '-'],
+//   ['-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', '-', '-', '-', '-', ' ', '-'],
+//   ['-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//   ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
+// ]
+
+// myMap = [
+// ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
+//   ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//   ['-', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', '-', '-', '-', '-', ' ', '-'],
+//   ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', '-'],
+//   ['-', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', '-', ' ', '-', '-', '-', '-'],
+//   ['-', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', '-', '-', '-', ' ', ' ', ' ', ' ', '-'],
+//   ['-', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', '-', '-', '-', '-', '-', '-'],
+//   ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//   ['-', ' ', ' ', ' ', ' ', ' ', ' ', '-', '-', '-', '-', ' ', ' ', ' ', '-', '-', '-'],
+//   ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', '-', ' ', ' ', ' ', ' ', '-'],
+//   ['-', ' ', ' ', ' ', ' ', '-', '-', ' ', ' ', ' ', '-', '-', ' ', '-', ' ', ' ', '-'],
+//   ['-', ' ', ' ', ' ', ' ', ' ', '-', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//   ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', '-', ' ', ' ', ' ', '-', '-'],
+//   ['-', ' ', ' ', ' ', ' ', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//   ['-', ' ', ' ', ' ', ' ', ' ', '-', ' ', '-', ' ', '-', '-', ' ', '-', '-', ' ', '-'],
+//   ['-', ' ', ' ', ' ', ' ', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//   ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
+// ]
 console.log(myMap);
 
 const mapCollection = {
@@ -259,7 +278,9 @@ let deadMap = checkDisconnectivity(myMap);
 deadMap[1][1] = 0;
 let disconnect = createDisconnectivityTable(deadMap);
 
+console.log("dead map");
 console.log(deadMap);
+console.log("disconnect");
 console.log(disconnect);
 
 
@@ -857,7 +878,6 @@ function fastestTimes(values, cat_r, cat_c, mouse_r, mouse_c, row_path, col_path
   while(!pq.isEmpty()) {
     relax_node(pq.extractMin());
   }
-  // console.log(matrix);
   grab_path(matrix, cat_r, cat_c, mouse_r, mouse_c, row_path, col_path);
 
 }
@@ -881,20 +901,32 @@ let count = 0;
 let max_rows = []
 let max_col = []
 
+
+let pathLengthMatrix = createPathMatrix(map);
 for (let i = 0; i < clearPaths.length; i++) {
-  for (let j = i + 1; j < clearPaths.length; j++) {
-    let start = clearPaths[i];
-    let end = clearPaths[j];
+  let local_max = 0;
+  // for (let j = i + 1; j < clearPaths.length; j++) {
+  for (let j = 0; j < clearPaths.length; j++) {
+    if(i != j) {
+      let start = clearPaths[i];
+      let end = clearPaths[j];
 
-    my_matrix = read_write_values(map)
+      my_matrix = read_write_values(map)
 
-    fastestTimes(my_matrix, start[0], start[1], end[0], end[1], max_rows, max_col)
-    if(max_rows.length > max_distance) {
-      max_distance = max_rows.length;
+      fastestTimes(my_matrix, start[0], start[1], end[0], end[1], max_rows, max_col)
+      if(max_rows.length > max_distance) {
+        max_distance = max_rows.length;
+      }
+      if(max_rows.length > local_max) {
+        local_max = max_rows.length;
+        pathLengthMatrix[start[0]][[start[1]]] = local_max;
+      }
+      count++;
     }
-    count++;
   }
 }
+
+console.log(pathLengthMatrix);
 
 console.log("max distance is ");
 console.log(max_distance);
@@ -904,7 +936,7 @@ const KEEP_DISTANCE = max_distance / 2  //maintain distance from cat AND get fur
 const ESCAPE_ATTEMPT = max_distance   //mouse gets closer to cat, exit gets closer to mouse, exit is closer to mouse than cat is to mouse
 const CAUGHT = -max_distance * 3
 const ESCAPE = max_distance * 3
-let EPS_DECAY = 0.9998
+
 const LEARNING_RATE = 0.1
 const DISCOUNT = 0.95
 //-----------------------------------------------------------------------------
@@ -985,6 +1017,7 @@ function isOscillating(stateHistory, maxHistory) {
 }
 
 //PRECOMPUTE ALL THE DIRECTIONS IN WHICH THE MOUSE HAS TO TAKE TO THE EXIT
+
 function createPathMatrix(map) {
   // Initialize an empty matrix for the 8x8 inner part
   let innerPathMatrix = [];
@@ -1005,6 +1038,8 @@ function createPathMatrix(map) {
 //0 for W (UP), 1 FOR A (LEFT), 2 for S (RIGHT), 3 for D (DOWN)
 let newPathMatrix = createPathMatrix(map);
 newPathMatrix[0][0] = 0;
+let wallCount = 0;
+let pathCount = 0;
 
 for (let rowIndex = 0; rowIndex < newPathMatrix.length; rowIndex++) {
   for (let colIndex = 0; colIndex < newPathMatrix[rowIndex].length; colIndex++) {
@@ -1015,9 +1050,18 @@ for (let rowIndex = 0; rowIndex < newPathMatrix.length; rowIndex++) {
 
       newPathMatrix[rowIndex][colIndex] = max_rows.length   //distance to exit
       //getExitDirection(max_rows[0], max_col[0], rowIndex, colIndex);
+      pathCount++;
+    }
+    else {
+      wallCount++;
     }
   }
 }
+
+console.log("path count");
+console.log(pathCount);
+console.log("wall count");
+console.log(wallCount);
 
 
 //CREATING THE QTABLE -----------------------------------------------------------------------------
@@ -1072,24 +1116,73 @@ for (let rowIndex = 0; rowIndex < newPathMatrix.length; rowIndex++) {
 // Possible directions (N, E, S, W) for cat and exit
 const directions = [0, 1, 2, 3]; 
 
+let numStates = 0;
+// let extendedStateSpaceMapping = {};
+// let stateIndex = 0;
+// for (let row = 1; row < map.length - 1; row++) {
+//   for (let col = 1; col < map[row].length - 1; col++) {
+//     if (map[row][col] === ' ') {
+//       for (let catDirection = 0; catDirection < directions.length; catDirection++) {
+//         for (let distance = 1; distance <= max_distance; distance++) {
+//           // The key no longer includes the exitDirection
+//           let key = `${row - 1},${col - 1}_${catDirection}_${distance}`;
+//           extendedStateSpaceMapping[key] = stateIndex++;
+//           numStates++;
+//         }
+//       }
+//     }
+//   }
+// }
 
 let extendedStateSpaceMapping = {};
 let stateIndex = 0;
+
+
+// Note: Adjusted to account for 0-based indices for the inner 8x8 grid
 for (let row = 1; row < map.length - 1; row++) {
   for (let col = 1; col < map[row].length - 1; col++) {
     if (map[row][col] === ' ') {
-      for (let catDirection = 0; catDirection < directions.length; catDirection++) {
-        for (let distance = 1; distance <= max_distance; distance++) {
-          // The key no longer includes the exitDirection
+      // Check for walls around the current position
+      let possibleCatDirections = [];
+      if (map[row - 1][col] === ' ' && (row !== 1 || col !== 1)) { // Check for wall above (we don't have to check at the exit)
+        possibleCatDirections.push(0); // Cat can come from 'up'
+      }
+      if (map[row][col + 1] === ' ') { // Check for wall to the right
+        possibleCatDirections.push(1); // Cat can come from 'left'
+      }
+      if (map[row][col - 1] === ' ') { // Check for wall to the left
+        possibleCatDirections.push(2); // Cat can come from 'right'
+      }
+      if (map[row + 1][col] === ' ') { // Check for wall below
+        possibleCatDirections.push(3); // Cat can come from 'down'
+      }
+      for (let catDirection of possibleCatDirections) {
+        for (let distance = 1; distance <= pathLengthMatrix[row - 1][col - 1]; distance++) {
           let key = `${row - 1},${col - 1}_${catDirection}_${distance}`;
           extendedStateSpaceMapping[key] = stateIndex++;
+          numStates++;
         }
       }
     }
   }
 }
 
+console.log("num states");
+console.log(numStates);
 
+
+function calculateDecayRate(n) {
+    const initialValue = 0.9;
+    const finalValue = 0.01;
+    return Math.pow(finalValue / initialValue, 1 / n);
+}
+
+// Example usage:
+const n = numStates / 2 + pathCount * max_distance / 2;  // Example value for the power
+const decayRate = calculateDecayRate(n);
+console.log(`The decay rate x for power n=${n} is: ${decayRate}`);
+
+let EPS_DECAY = decayRate;
 // Function to get the extended state index
 // function getStateIndex(row, col, catDirection, mouseCatDistance, exitDirection) {
 //   const key = `${row},${col}_${catDirection}_${mouseCatDistance}_${exitDirection}`;
@@ -1690,19 +1783,19 @@ function animate() {
         reward = KEEP_DISTANCE;
 
         //the mouse was actually close enough to the exit to escape but did not take the opportunity to do so
-        if((new_exit_distance + 1) < cat_to_exit) {
+        if((new_exit_distance) < cat_to_exit) {
           reward = -(max_distance - myCats[0].rows.length);
         }
       }
-      else if((old_cat_distance - 1 == new_cat_distance) && (new_exit_distance < old_exit_distance) && ((new_exit_distance + 1) < cat_to_exit)) {
+      else if((old_cat_distance - 1 == new_cat_distance) && (new_exit_distance < old_exit_distance) && ((new_exit_distance) < cat_to_exit)) {
         //not putting full effort into escaping.
         reward = -(max_distance - myCats[0].rows.length);
       }
-      else if((old_cat_distance > new_cat_distance) && (new_exit_distance < old_exit_distance) && ((new_exit_distance + 1) < cat_to_exit)) {
+      else if((old_cat_distance > new_cat_distance) && (new_exit_distance < old_exit_distance) && ((new_exit_distance) < cat_to_exit)) {
         //the mouse gets closer to cat
         //the exit got closer to mouse
         //the exit is closer to mouse than cat is to mouse
-        reward = ESCAPE_ATTEMPT;
+        reward = ESCAPE_ATTEMPT;      //WEE NEED TO EDIT THISS - because sometimes we are rushing to the exit and backtrack at a cat running behind us
       }
       else {
         //the cat got closer (penalize harder if the cat is close.)
@@ -1738,34 +1831,17 @@ function animate() {
     document.getElementById('eRewards-value').textContent = episodeRewards;
 
     if(restart) {
-      //THE MOUSE GOT CAUGHT
-      // if(old_dead_end) {
-      //   //it's ok to get caught when trying to escape
-      //   reward = max_distance;
-      // }
-      // else {
-      //   reward = CAUGHT;
-      // }
-      // console.log(deadEnd);
-      // console.log(old_dead_end);
-      // console.log(old_old_dead_end);
       reward = CAUGHT;
     }
 
     if(restart2) {
-      // console.log(deadEnd);
-      // console.log(old_dead_end);
-      // console.log(old_old_dead_end);
       reward = ESCAPE;
     }
-    // console.log(reward);
     let new_q;
 
     let new_stateIndex = getStateIndex(mouse_row, mouse_col, direction, myCats[0].rows.length)
-    //console.log(reward);
 
     let current_q = Qtable[state_Index][action];
-    //console.log(current_q);
 
     let max_future_q = getBestAction(Qtable, new_stateIndex);
 
@@ -1775,7 +1851,6 @@ function animate() {
     }
     else {
       new_q = (1 - LEARNING_RATE) * current_q + LEARNING_RATE * (reward + DISCOUNT * max_future_q);
-      //console.log(new_q);
     }
 
     if(TRAINING) {
