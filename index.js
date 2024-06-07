@@ -1393,6 +1393,8 @@ function animate() {
   let new_cat_distance;   //THE NEW DISTANCE from cat to mouse
   let old_exit_distance;  //THE PREVIOUS DISTANCE from exit to mouse
   let new_exit_distance   //THE NEW DISTANCE from exit to mouse
+  let cat_to_exit;
+  let old_cat_to_exit;
   // let old_dead_end;
   // let old_old_dead_end;
   let action;    
@@ -1748,7 +1750,7 @@ function animate() {
 
     new_cat_distance = myCats[0].rows.length;
     new_exit_distance = newPathMatrix[get_discrete_Y(player.position.y)][get_discrete_X(player.position.x)];
-    let cat_to_exit = newPathMatrix[get_discrete_Y(myCats[0].position.y)][get_discrete_X(myCats[0].position.x)];
+    cat_to_exit = newPathMatrix[get_discrete_Y(myCats[0].position.y)][get_discrete_X(myCats[0].position.x)];
 
     let row_incoming = myCats[0].rows[myCats[0].rows.length - 3];
     let col_incoming = myCats[0].col[myCats[0].col.length - 3];
@@ -1863,6 +1865,7 @@ function animate() {
 
     old_cat_distance = new_cat_distance;    //SAVE THIS VALUE FOR NEXT ITERATION
     old_exit_distance = new_exit_distance;  
+    old_cat_to_exit = cat_to_exit;
     old_old_dead_end = old_dead_end;
     old_dead_end = deadEnd;
 
