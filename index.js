@@ -931,8 +931,8 @@ console.log(pathLengthMatrix);
 console.log("max distance is ");
 console.log(max_distance);
 //RL PARAMETERS -----------------------------------------------------------------------------
-const KEEP_DISTANCE_EXIT_ATTEMPT = 1.5 * max_distance  //maintain distance from cat AND get closer to exit
-const KEEP_DISTANCE = max_distance / 4  //maintain distance from cat AND get further/maintain distance from exit
+const KEEP_DISTANCE_EXIT_ATTEMPT = max_distance  //maintain distance from cat AND get closer to exit
+const KEEP_DISTANCE = max_distance / 2  //maintain distance from cat AND get further/maintain distance from exit
 const ESCAPE_ATTEMPT = max_distance   //mouse gets closer to cat, exit gets closer to mouse, exit is closer to mouse than cat is to mouse
 const CAUGHT = -max_distance * 3
 const ESCAPE = max_distance * 3
@@ -1405,6 +1405,11 @@ function animate() {
   let old_cat_row;
   let old_cat_col;
 
+  let direction;
+  let old_direction;
+  let exit_direction;
+  let old_exit_direction;
+
   //reset
   if(restart) {
     restart = false;
@@ -1443,8 +1448,8 @@ function animate() {
     let mouse_row = get_discrete_Y(player.position.y);
     let mouse_col = get_discrete_X(player.position.x);
 
-    let direction = getCatDirection(mouse_row, mouse_col, row_incoming, col_incoming)
-
+    direction = getCatDirection(mouse_row, mouse_col, row_incoming, col_incoming)
+    exit_
     //getStateIndex(row, col, catDirection, mouseCatDistance, exitDirection)
 
     state_Index = getStateIndex(mouse_row, mouse_col, direction, myCats[0].rows.length)
@@ -1766,7 +1771,8 @@ function animate() {
       col_incoming = myCats[0].col[myCats[0].col.length - 3];
     }
 
-    let direction = getCatDirection(mouse_row, mouse_col, row_incoming, col_incoming);
+    direction = getCatDirection(mouse_row, mouse_col, row_incoming, col_incoming);
+    exit_direction = getCatDirection(mouse_row, mouse_col, 1, 1);   //check our exit direction
     deadEnd = getDisconnectivityValue(disconnect, mouse_row, mouse_col, direction);
     updateDeadEnd();
     //console.log(type(deadEnd));
@@ -1789,7 +1795,8 @@ function animate() {
         reward = KEEP_DISTANCE;
 
         //the mouse was actually close enough to the exit to escape but did not take the opportunity to do so
-        if((old_exit_distance === cat_to_exit)) {
+        //that is if the old cat was not coming from the old direction of the exit
+        if(old_direction !== old_exit_direction) {
           reward = -(max_distance - myCats[0].rows.length);
         }
       }
@@ -1868,6 +1875,8 @@ function animate() {
     old_cat_to_exit = cat_to_exit;
     old_old_dead_end = old_dead_end;
     old_dead_end = deadEnd;
+    old_direction = direction;
+    old_exit_direction = exit_direction;
 
     if(restart || restart2) {
       episodeRewards = 0;
