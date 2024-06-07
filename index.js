@@ -29,6 +29,7 @@ let restart = false;    //mouse got caught
 let restart2 = false;   //mouse escaped
 let max_distance = 0;         //MAX POSSIBLE DISTANCE BETWEEN THE CAT AND MOUSE
 let success = 0;
+let episodeRewards = 0;
 
 // Declare numCats as a global variable
 window.numCats = numCats;
@@ -333,6 +334,7 @@ function updateDeadEnd() {
     document.getElementById('end-status').classList.remove('active');
   }
 }
+
 
 //------------------------------------------------UPDATED CODE
 
@@ -941,7 +943,7 @@ function getExitDirection(exitRow, exitCol, mouseRow, mouseCol) {
 
 //MONITOR OSCILLATIONS IN THE RL ENVIRONMENT
 
-let maxHistory = max_distance;  //change later if want
+let maxHistory = 5;  //change later if want
 let stateHistory = [];
 
 function updateStateHistory(stateHistory, newState, maxHistory) {
@@ -1094,6 +1096,8 @@ for (let row = 1; row < map.length - 1; row++) {
 //   return key;
 // }
 
+let saved_state_index = null;    //a saved state index to prevent oscillations in the environment
+
 function getStateIndex(row, col, catDirection, mouseCatDistance) {
   const key = `${row},${col}_${catDirection}_${mouseCatDistance}`;
   return key;
@@ -1126,6 +1130,22 @@ function getBestAction(Qtable, stateKey) {
     }
   }
   return bestAction; // Returns the index of the action with the highest Q-value
+}
+
+function getSecondBestAction(Qtable, stateKey) {
+    const actionsQValues = Qtable[stateKey];
+    if (!actionsQValues || actionsQValues.length < 2) {
+        return null; // Handle the case where the state does not exist or has less than 2 actions
+    }
+
+    // Create an array of [action, Q-value] pairs
+    const actionQValuePairs = actionsQValues.map((qValue, action) => [action, qValue]);
+
+    // Sort the pairs based on Q-value in descending order
+    actionQValuePairs.sort((a, b) => b[1] - a[1]);
+
+    // Return the action (index) of the second pair (second highest Q-value)
+    return actionQValuePairs[1][0];
 }
 
 
@@ -1349,16 +1369,31 @@ function animate() {
       action = getBestAction(Qtable, state_Index);
     }
 
-    if (isOscillating(stateHistory, maxHistory)) {
+    if (!TRAINING && isOscillating(stateHistory, maxHistory)) {
       console.log('The mouse is oscillating!');
       // Implement logic to handle oscillation, such as choosing a different action.
-      action = Math.floor(Math.random() * 4);
+      action = getSecondBestAction(Qtable, state_Index);
     }
+
+    if(!TRAINING && state_Index !== null && saved_state_index !== null && state_Index === saved_state_index) {
+      action = getSecondBestAction(Qtable, state_Index);
+    }
+
     timeoutCtr += 1;
 
-    if(timeoutCtr % (max_distance * 5) === 0) {
+    if(timeoutCtr % (max_distance * 4) === 0) {
       timeoutCtr = 0;
-      action = Math.floor(Math.random() * 4);
+      // if(!TRAINING) {
+      //   action = getSecondBestAction(Qtable, state_index);
+      // }
+      // else if(TRAINING && epsilon < 0.4) {
+      //   action = Math.floor(Math.random() * 4);
+      // }
+
+      if(TRAINING && epsilon < 0.4) {
+        action = Math.floor(Math.random() * 4);
+      }
+      
     }
     if(TRAINING) {
       updateExploitation();
@@ -1653,6 +1688,15 @@ function animate() {
         //the mouse maintains distance from cat
         //the mouse gets further or same distance from exit
         reward = KEEP_DISTANCE;
+
+        //the mouse was actually close enough to the exit to escape but did not take the opportunity to do so
+        if((new_exit_distance + 1) < cat_to_exit) {
+          reward = -(max_distance - myCats[0].rows.length);
+        }
+      }
+      else if((old_cat_distance - 1 == new_cat_distance) && (new_exit_distance < old_exit_distance) && ((new_exit_distance + 1) < cat_to_exit)) {
+        //not putting full effort into escaping.
+        reward = -(max_distance - myCats[0].rows.length);
       }
       else if((old_cat_distance > new_cat_distance) && (new_exit_distance < old_exit_distance) && ((new_exit_distance + 1) < cat_to_exit)) {
         //the mouse gets closer to cat
@@ -1689,7 +1733,9 @@ function animate() {
         reward = ESCAPE;
       }
     }
-    
+    episodeRewards += reward;
+    document.getElementById('rewards-value').textContent = reward;
+    document.getElementById('eRewards-value').textContent = episodeRewards;
 
     if(restart) {
       //THE MOUSE GOT CAUGHT
@@ -1700,19 +1746,19 @@ function animate() {
       // else {
       //   reward = CAUGHT;
       // }
-      console.log(deadEnd);
-      console.log(old_dead_end);
-      console.log(old_old_dead_end);
+      // console.log(deadEnd);
+      // console.log(old_dead_end);
+      // console.log(old_old_dead_end);
       reward = CAUGHT;
     }
 
     if(restart2) {
-      console.log(deadEnd);
-      console.log(old_dead_end);
-      console.log(old_old_dead_end);
+      // console.log(deadEnd);
+      // console.log(old_dead_end);
+      // console.log(old_old_dead_end);
       reward = ESCAPE;
     }
-    console.log(reward);
+    // console.log(reward);
     let new_q;
 
     let new_stateIndex = getStateIndex(mouse_row, mouse_col, direction, myCats[0].rows.length)
@@ -1736,12 +1782,17 @@ function animate() {
       Qtable[state_Index][action] = new_q;  //we only update the training values when in training
     }
 
+    if(timeoutCtr % 10 === 0) {
+      saved_state_index = state_Index;
+    }
+
     old_cat_distance = new_cat_distance;    //SAVE THIS VALUE FOR NEXT ITERATION
     old_exit_distance = new_exit_distance;  
     old_old_dead_end = old_dead_end;
     old_dead_end = deadEnd;
 
     if(restart || restart2) {
+      episodeRewards = 0;
       timeoutCtr = 0;
       //reset parameters;
       if(TRAINING) {
