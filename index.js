@@ -932,7 +932,7 @@ console.log("max distance is ");
 console.log(max_distance);
 //RL PARAMETERS -----------------------------------------------------------------------------
 const KEEP_DISTANCE_EXIT_ATTEMPT = max_distance  //maintain distance from cat AND get closer to exit
-const KEEP_DISTANCE = max_distance / 2  //maintain distance from cat AND get further/maintain distance from exit
+const KEEP_DISTANCE = max_distance / 4  //maintain distance from cat AND get further/maintain distance from exit
 const ESCAPE_ATTEMPT = max_distance   //mouse gets closer to cat, exit gets closer to mouse, exit is closer to mouse than cat is to mouse
 const CAUGHT = -max_distance * 3
 const ESCAPE = max_distance * 3
