@@ -902,6 +902,7 @@ let max_rows = []
 let max_col = []
 
 
+
 let pathLengthMatrix = createPathMatrix(map);
 for (let i = 0; i < clearPaths.length; i++) {
   let local_max = 0;
@@ -1057,6 +1058,9 @@ for (let rowIndex = 0; rowIndex < newPathMatrix.length; rowIndex++) {
     }
   }
 }
+
+console.log("our new path matrix is:");
+console.log(newPathMatrix);
 
 console.log("path count");
 console.log(pathCount);
@@ -1771,7 +1775,7 @@ function animate() {
     }
 
     direction = getCatDirection(mouse_row, mouse_col, row_incoming, col_incoming);
-    exit_direction = getCatDirection(mouse_row, mouse_col, 1, 1);   //check our exit direction
+    exit_direction = getCatDirection(mouse_row, mouse_col, 0, 0);   //check our exit direction
     deadEnd = getDisconnectivityValue(disconnect, mouse_row, mouse_col, direction);
     updateDeadEnd();
     //console.log(type(deadEnd));
