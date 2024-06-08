@@ -17,6 +17,7 @@ let epsilon = 0.9
 let EPISODES = 0;
 let preyStatus = "living";
 let TRAINING = true;
+let SHOW_DIJKSTRA = false;
 let timeoutCtr = 0;
 let deadEnd = false;
 let old_dead_end = false;
@@ -282,6 +283,14 @@ document.getElementById('phase-switch').addEventListener('click', () => {
   }
   
 
+  // Toggle between training and performance phases
+  // Example: handleTrainingPhaseSwitch(trainingPhase);
+});
+
+document.getElementById('dijkstra').addEventListener('click', () => {
+  // trainingPhase = !trainingPhase;
+  //document.getElementById('phase-switch').textContent = TRAINING ? 'Training' : 'Performance';
+  SHOW_DIJKSTRA = !SHOW_DIJKSTRA; //toggle
   // Toggle between training and performance phases
   // Example: handleTrainingPhaseSwitch(trainingPhase);
 });
@@ -1647,7 +1656,7 @@ function animate() {
     }
   }
 
-  if(!show_path) {
+  if(!SHOW_DIJKSTRA || !show_path) {
     catPaths = [];
     show_path = true;
   }
