@@ -1011,14 +1011,6 @@ for (let rowIndex = 0; rowIndex < newPathMatrix.length; rowIndex++) {
       //check all paths. 
       my_matrix = read_write_values(map);
       fastestTimes(my_matrix, rowIndex, colIndex, 0, 0, max_rows, max_col);
-      console.log("row");
-      console.log(rowIndex);
-      console.log("col");
-      console.log(colIndex);
-      console.log("row values");
-      console.log(max_rows);
-      console.log("col values");
-      console.log(max_col);
       newPathMatrix[rowIndex][colIndex] = max_rows.length   //distance to exit
       if(max_rows.length != 0) {
         pathDirectionMatrix[rowIndex][colIndex] = getCatDirection(rowIndex, colIndex, max_rows[0], max_col[0]);
