@@ -514,10 +514,41 @@ class Boundary {
       else {
         c.fillStyle = 'green'
       }
-
     }
     else {
       c.fillStyle = 'black'
+    }
+
+    c.fillRect(this.position.x, this.position.y, this.width, this.height)
+  }
+}
+
+class CatPath {
+  static width = 40
+  static height = 40
+  constructor({ position }) {
+    this.position = position
+    this.width = 40
+    this.height = 40
+  }
+
+  draw() {
+    //c.drawImage(this.image, this.position.x, this.position.y)
+    if(get_discrete_X(this.position.x) < 0 || 
+      get_discrete_Y(this.position.y) < 0 ||
+      get_discrete_X(this.position.x) > map.length - 4 ||
+      get_discrete_Y(this.position.y) > map[0].length - 4
+      ) {
+      if((get_discrete_X(this.position.x) === map.length || get_discrete_X(this.position.x) === map.length) &&
+      (get_discrete_Y(this.position.y) > map[0].length - 4)) {
+        c.fillStyle = 'transparent';
+      }
+      else {
+        c.fillStyle = 'green'
+      }
+    }
+    else {
+      c.fillStyle = 'yellow'
     }
 
     c.fillRect(this.position.x, this.position.y, this.width, this.height)
@@ -634,7 +665,6 @@ class Cat {
 }
 
 const boundaries = []
-
 
 const mapWidth = map[0].length * Boundary.width;    //number of columns
 const mapHeight = map.length * Boundary.height;     //number of rows
@@ -1267,6 +1297,15 @@ map.forEach((row, i) => {
   })
 })
 
+// catPaths.push(
+//         new CatPath({
+//           position: {
+//              x: offsetX + Boundary.width * 5,
+//                        y: offsetY + Boundary.height * 5
+//           }
+//         })
+//       )
+
 function circleCollidesWithRectangle({
   circle,
   rectangle
@@ -1351,6 +1390,8 @@ let old_direction;
 let exit_direction;
 let old_exit_direction;
 
+let catPaths = []
+
 function animate() {
   //console.log(myCats[0].position)
   // if(player.position.y < startingY) {
@@ -1406,7 +1447,21 @@ function animate() {
       //FIRST ITERATION SO WE HAVE TO CREATE THE INITIAL OBSERVATION
       my_matrix = read_write_values(map)
       fastestTimes(my_matrix, get_discrete_Y(myCats[0].position.y), get_discrete_X(myCats[0].position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), myCats[0].rows, myCats[0].col)
+      catPaths = []
+      for (let i = 0; i < myCats[0].rows.length; i++) {
+        if (myCats[0].rows[i] !== -1 && myCats[0].col[i] !== -1) {
+          catPaths.push(
+            new CatPath({
+              position: {
+                x: offsetX + Boundary.width * (myCats[0].col[i] + 1),
+                y: offsetY + Boundary.height * (myCats[0].rows[i] + 1)
+              }
+            })
+          );
+        }
+      }
     }
+
 
     // if(myCats[0].rows.length !== 0) {
       //determine the direction in which the cat is coming from.
@@ -1582,9 +1637,12 @@ function animate() {
       }
     }
   }
+  catPaths.forEach((catPath) => {
+    catPath.draw();
+  })
 
   boundaries.forEach((boundary) => {
-    boundary.draw()
+    boundary.draw();
     if (circleCollidesWithRectangle({
       circle: player,
       rectangle: boundary
@@ -1594,6 +1652,8 @@ function animate() {
     }
 
   })
+
+  
 
   //player.blockage = true;     //DELETEEEEEE AFTER
 
@@ -1695,7 +1755,20 @@ function animate() {
       my_matrix = read_write_values(map)
 
       fastestTimes(my_matrix, get_discrete_Y(myCats[i].position.y), get_discrete_X(myCats[i].position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), myCats[i].rows, myCats[i].col)
-
+      catPaths = []
+      for (let j = 0; j < myCats[0].rows.length; j++) {
+        if (myCats[0].rows[j] !== -1 && myCats[0].col[j] !== -1) {
+          catPaths.push(
+            new CatPath({
+              position: {
+                x: offsetX + Boundary.width * (myCats[0].col[j] + 1),
+                y: offsetY + Boundary.height * (myCats[0].rows[j] + 1)
+              }
+            })
+          );
+        }
+      }
+    
     }
 
     //CHECK IF PLAYER AND CAT ARE RIGHT NEXT TO EACH OTHER;
