@@ -1392,6 +1392,11 @@ function check_escape(mouseRow, mouseCol, action) {
   }
 }
 
+let direction;
+let old_direction;
+let exit_direction;
+let old_exit_direction;
+
 function animate() {
   //console.log(myCats[0].position)
   // if(player.position.y < startingY) {
@@ -1423,11 +1428,6 @@ function animate() {
   let old_mouse_col;
   let old_cat_row;
   let old_cat_col;
-
-  let direction;
-  let old_direction;
-  let exit_direction;
-  let old_exit_direction;
 
   //reset
   if(restart) {
@@ -1790,10 +1790,8 @@ function animate() {
     }
 
     direction = getCatDirection(mouse_row, mouse_col, row_incoming, col_incoming);
-
-
     exit_direction = pathDirectionMatrix[mouse_row][mouse_col];//getCatDirection(mouse_row, mouse_col, 0, 0);   //check our exit direction
-    
+
     deadEnd = getDisconnectivityValue(disconnect, mouse_row, mouse_col, direction);
     updateDeadEnd();
     //console.log(type(deadEnd));
@@ -1814,14 +1812,14 @@ function animate() {
         //the mouse maintains distance from cat
         //the mouse gets further or same distance from exit
         reward = KEEP_DISTANCE;
-
+        console.log("old_direction");
+        console.log(old_direction);
+        console.log("old exit direction");
+        console.log(old_exit_direction);
         //the mouse was actually close enough to the exit to escape but did not take the opportunity to do so
         //that is if the old cat was not coming from the old direction of the exit
         if(old_direction !== old_exit_direction) {
-          console.log("old_direction");
-          console.log(old_direction);
-          console.log("old exit direction");
-          console.log(old_exit_direction);
+          console.log("THIS IS SO BAD");
           reward = -(max_distance - myCats[0].rows.length);
         }
       }
