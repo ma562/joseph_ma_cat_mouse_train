@@ -1527,7 +1527,6 @@ function animate() {
     timeoutCtr += 1;
 
     if(timeoutCtr % (max_distance * 4) === 0) {
-      timeoutCtr = 0;
       // if(!TRAINING) {
       //   action = getSecondBestAction(Qtable, state_index);
       // }
@@ -1537,11 +1536,15 @@ function animate() {
 
       if(TRAINING && epsilon < 0.4) {
         action = Math.floor(Math.random() * 4);
+        timeoutCtr = 0;
       }
-      
     }
     if(TRAINING) {
       updateExploitation();
+    }
+    if(!TRAINING && (timeoutCtr % (max_distance * 10) == 0)) {
+      timeoutCtr = 0;
+      action = getSecondBestAction(Qtable, state_Index);
     }
     //-----------------------------------------------------------------------------
 
