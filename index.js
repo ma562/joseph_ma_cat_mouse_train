@@ -38,11 +38,6 @@ let myMap = JSON.parse(localStorage.getItem('mapConfiguration'));
 
 console.log(myMap);
 
-const mapCollection = {
-  map1: myMap
-
-};
-
 //DEAD END CODE--------------------------------------------------
 function countPaths(grid, startRow, startCol) {
     let visited = Array.from({ length: grid.length }, () => Array(grid[0].length).fill(false));
@@ -244,6 +239,12 @@ console.log(deadMap);
 console.log("disconnect");
 console.log(disconnect);
 
+myMap[0][1] = ' ';
+
+const mapCollection = {
+  map1: myMap
+
+};
 
 //-------------------------------------------------------------
 
