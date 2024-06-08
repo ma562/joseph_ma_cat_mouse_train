@@ -1037,8 +1037,9 @@ function createPathMatrix(map) {
 }
 
 //0 for W (UP), 1 FOR A (LEFT), 2 for S (RIGHT), 3 for D (DOWN)
-let newPathMatrix = createPathMatrix(map);
-newPathMatrix[0][0] = 0;
+let newPathMatrix = createPathMatrix(map);    //matrix to display path length to exit
+let pathDirectionMatrix = createPathMatrix(map);    //matrix to display direction to exit
+newPathMatrix[0][0] = 1;
 let wallCount = 0;
 let pathCount = 0;
 
@@ -1047,9 +1048,20 @@ for (let rowIndex = 0; rowIndex < newPathMatrix.length; rowIndex++) {
     if(newPathMatrix[rowIndex][colIndex] === -1) {
       //check all paths. 
       my_matrix = read_write_values(map);
-      fastestTimes(my_matrix, rowIndex, colIndex, 0, 0, max_rows, max_col)
-
+      fastestTimes(my_matrix, rowIndex, colIndex, 0, 0, max_rows, max_col);
+      console.log("row");
+      console.log(rowIndex);
+      console.log("col");
+      console.log(colIndex);
+      console.log("row values");
+      console.log(max_rows);
+      console.log("col values");
+      console.log(max_col);
       newPathMatrix[rowIndex][colIndex] = max_rows.length   //distance to exit
+      if(max_rows.length != 0) {
+        pathDirectionMatrix[rowIndex][colIndex] = getCatDirection(rowIndex, colIndex, max_rows[0], max_col[0]);
+      }
+      // pathDirectionMatrix[rowIndex][colIndex] = 
       //getExitDirection(max_rows[0], max_col[0], rowIndex, colIndex);
       pathCount++;
     }
@@ -1061,6 +1073,9 @@ for (let rowIndex = 0; rowIndex < newPathMatrix.length; rowIndex++) {
 
 console.log("our new path matrix is:");
 console.log(newPathMatrix);
+
+console.log("our path direction matrix is: ");
+console.log(pathDirectionMatrix);
 
 console.log("path count");
 console.log(pathCount);
@@ -1452,7 +1467,7 @@ function animate() {
     let mouse_row = get_discrete_Y(player.position.y);
     let mouse_col = get_discrete_X(player.position.x);
 
-    direction = getCatDirection(mouse_row, mouse_col, row_incoming, col_incoming)
+    direction = getCatDirection(mouse_row, mouse_col, row_incoming, col_incoming);
     //getStateIndex(row, col, catDirection, mouseCatDistance, exitDirection)
 
     state_Index = getStateIndex(mouse_row, mouse_col, direction, myCats[0].rows.length)
@@ -1775,7 +1790,10 @@ function animate() {
     }
 
     direction = getCatDirection(mouse_row, mouse_col, row_incoming, col_incoming);
-    exit_direction = getCatDirection(mouse_row, mouse_col, 0, 0);   //check our exit direction
+
+
+    exit_direction = pathDirectionMatrix[mouse_row][mouse_col];//getCatDirection(mouse_row, mouse_col, 0, 0);   //check our exit direction
+    
     deadEnd = getDisconnectivityValue(disconnect, mouse_row, mouse_col, direction);
     updateDeadEnd();
     //console.log(type(deadEnd));
@@ -1800,6 +1818,10 @@ function animate() {
         //the mouse was actually close enough to the exit to escape but did not take the opportunity to do so
         //that is if the old cat was not coming from the old direction of the exit
         if(old_direction !== old_exit_direction) {
+          console.log("old_direction");
+          console.log(old_direction);
+          console.log("old exit direction");
+          console.log(old_exit_direction);
           reward = -(max_distance - myCats[0].rows.length);
         }
       }
