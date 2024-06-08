@@ -1389,6 +1389,7 @@ let direction;
 let old_direction;
 let exit_direction;
 let old_exit_direction;
+let show_path = true;
 
 let catPaths = []
 
@@ -1448,6 +1449,14 @@ function animate() {
       my_matrix = read_write_values(map)
       fastestTimes(my_matrix, get_discrete_Y(myCats[0].position.y), get_discrete_X(myCats[0].position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), myCats[0].rows, myCats[0].col)
       catPaths = []
+      catPaths.push(
+        new CatPath({
+          position: {
+            x: offsetX + Boundary.width * (get_discrete_X(myCats[0].position.x) + 1),
+            y: offsetY + Boundary.height * (get_discrete_Y(myCats[0].position.y) + 1)
+          }
+        })
+      );
       for (let i = 0; i < myCats[0].rows.length; i++) {
         if (myCats[0].rows[i] !== -1 && myCats[0].col[i] !== -1) {
           catPaths.push(
@@ -1637,9 +1646,17 @@ function animate() {
       }
     }
   }
-  catPaths.forEach((catPath) => {
-    catPath.draw();
-  })
+
+  if(!show_path) {
+    catPaths = [];
+    show_path = true;
+  }
+  else {
+    catPaths.forEach((catPath) => {
+      catPath.draw();
+    })
+  }
+  
 
   boundaries.forEach((boundary) => {
     boundary.draw();
@@ -1756,6 +1773,14 @@ function animate() {
 
       fastestTimes(my_matrix, get_discrete_Y(myCats[i].position.y), get_discrete_X(myCats[i].position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), myCats[i].rows, myCats[i].col)
       catPaths = []
+      catPaths.push(
+        new CatPath({
+          position: {
+            x: offsetX + Boundary.width * (get_discrete_X(myCats[0].position.x) + 1),
+            y: offsetY + Boundary.height * (get_discrete_Y(myCats[0].position.y) + 1)
+          }
+        })
+      );
       for (let j = 0; j < myCats[0].rows.length; j++) {
         if (myCats[0].rows[j] !== -1 && myCats[0].col[j] !== -1) {
           catPaths.push(
@@ -1938,7 +1963,7 @@ function animate() {
       myCats[0].rows = [];
       myCats[0].col = [];
       let positions = selectFreePositions(map);
-
+      show_path = false;
       player.position.y = get_continuous_X(positions.mousePosition.row) //startingY + (Boundary.width * 0);
       player.position.x = get_continuous_Y(positions.mousePosition.col) //startingX + (Boundary.width * 0);   
       myCats[0].position.y = get_continuous_X(positions.catPosition.row) //startingY + (Boundary.width * 7);

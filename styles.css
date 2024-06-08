@@ -93,7 +93,22 @@ body {
     transition: background-color 0.3s;
 }
 
+#dijkstra {
+    padding: 5px 10px;
+    font-size: 14px;
+    border: none;
+    background-color: #007BFF;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
 #phase-switch:hover {
+    background-color: #0056b3;
+}
+
+#dijkstra:hover {
     background-color: #0056b3;
 }
 
