@@ -946,7 +946,7 @@ function getPathLength(point1, point2) {
 }
 
 console.log(pathLengthMatrix);
-
+console.log("help!");
 console.log(pathLengths);
 
 console.log(Object.keys(pathLengths).length);
