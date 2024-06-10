@@ -903,7 +903,8 @@ let max_rows = []
 let max_col = []
 
 
-
+console.log(clearPaths.length);
+console.log(clearPaths);
 let pathLengthMatrix = createPathMatrix(map);
 for (let i = 0; i < clearPaths.length; i++) {
   let local_max = 0;
@@ -950,9 +951,9 @@ function getCatDirection(mouseRow, mouseCol, catRow, catCol) {
   if (catRow < mouseRow) {
     return 0; // Cat is above the mouse, so it's coming from 'up'
   } else if (catCol > mouseCol) {
-    return 1; // Cat is to the right of the mouse, so it's coming from 'left'
+    return 1; // Cat is to the right of the mouse, so it's coming from 'left' //ACTUALLY RIGHT
   } else if (catCol < mouseCol) {
-    return 2; // Cat is to the left of the mouse, so it's coming from 'right'
+    return 2; // Cat is to the left of the mouse, so it's coming from 'right' //ACTUALLY LEFT
   } else if (catRow > mouseRow) {
     return 3; // Cat is below the mouse, so it's coming from 'down'
   }
@@ -1044,9 +1045,11 @@ newPathMatrix[0][0] = 1;
 let wallCount = 0;
 let pathCount = 0;
 
+console.log(newPathMatrix);
 for (let rowIndex = 0; rowIndex < newPathMatrix.length; rowIndex++) {
   for (let colIndex = 0; colIndex < newPathMatrix[rowIndex].length; colIndex++) {
-    if(newPathMatrix[rowIndex][colIndex] === -1) {
+    // if(newPathMatrix[rowIndex][colIndex] === -1) {
+    if(newPathMatrix[rowIndex][colIndex] !== -2) {
       //check all paths. 
       my_matrix = read_write_values(map);
       fastestTimes(my_matrix, rowIndex, colIndex, 0, 0, max_rows, max_col);
@@ -1160,10 +1163,10 @@ for (let row = 1; row < map.length - 1; row++) {
         possibleCatDirections.push(0); // Cat can come from 'up'
       }
       if (map[row][col + 1] === ' ') { // Check for wall to the right
-        possibleCatDirections.push(1); // Cat can come from 'left'
+        possibleCatDirections.push(1); // Cat can come from 'left'    //right
       }
       if (map[row][col - 1] === ' ') { // Check for wall to the left
-        possibleCatDirections.push(2); // Cat can come from 'right'
+        possibleCatDirections.push(2); // Cat can come from 'right'   //left
       }
       if (map[row + 1][col] === ' ') { // Check for wall below
         possibleCatDirections.push(3); // Cat can come from 'down'
