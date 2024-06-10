@@ -906,11 +906,14 @@ let max_col = []
 console.log(clearPaths.length);
 console.log(clearPaths);
 let pathLengthMatrix = createPathMatrix(map);
+
+let pathLengths = {};  // Dictionary to store path lengths
+
 for (let i = 0; i < clearPaths.length; i++) {
   let local_max = 0;
   // for (let j = i + 1; j < clearPaths.length; j++) {
   for (let j = 0; j < clearPaths.length; j++) {
-    if(i != j) {
+    if(i != j && i > j) {
       let start = clearPaths[i];
       let end = clearPaths[j];
 
@@ -922,14 +925,30 @@ for (let i = 0; i < clearPaths.length; i++) {
       }
       if(max_rows.length > local_max) {
         local_max = max_rows.length;
+        if(max_rows.length > pathLengthMatrix[end[0]][end[1]]) {
+          pathLengthMatrix[end[0]][end[1]] = local_max;
+        }
         pathLengthMatrix[start[0]][[start[1]]] = local_max;
       }
       count++;
+
+      let key = JSON.stringify([start, end].sort());
+      pathLengths[key] = max_rows.length;
     }
   }
 }
 
+function getPathLength(point1, point2) {
+  let key = JSON.stringify([point1, point2].sort());
+  return pathLengths[key] || null;  // Return the path length or null if not found
+}
+
 console.log(pathLengthMatrix);
+
+console.log(pathLengths);
+
+console.log(Object.keys(pathLengths).length);
+console.log(count);
 
 console.log("max distance is ");
 console.log(max_distance);
@@ -1046,9 +1065,9 @@ let wallCount = 0;
 let pathCount = 0;
 
 console.log(newPathMatrix);
+
 for (let rowIndex = 0; rowIndex < newPathMatrix.length; rowIndex++) {
   for (let colIndex = 0; colIndex < newPathMatrix[rowIndex].length; colIndex++) {
-    // if(newPathMatrix[rowIndex][colIndex] === -1) {
     if(newPathMatrix[rowIndex][colIndex] !== -2) {
       //check all paths. 
       my_matrix = read_write_values(map);
