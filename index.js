@@ -37,17 +37,38 @@ window.numCats = numCats;
 
 let myMap = JSON.parse(localStorage.getItem('mapConfiguration'));
 
-myMap = [['-', ' ', '-', '-', '-', '-', '-', '-', '-', '-'],
-    ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-    ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-    ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-    ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-    ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-    ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-    ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-    ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-    ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+myMap = [['-', ' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
+    ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
 ]
+
+// myMap = [['-', ' ', '-', '-', '-', '-', '-'],
+//         ['-', ' ', ' ', ' ', ' ', ' ', '-'],
+//         ['-', ' ', ' ', ' ', ' ', ' ', '-'],
+//         ['-', ' ', ' ', ' ', ' ', ' ', '-'],
+//         ['-', ' ', ' ', ' ', ' ', ' ', '-'],
+//         ['-', ' ', ' ', ' ', ' ', ' ', '-'],
+//         ['-', '-', '-', '-', '-', '-', '-'],
+    // ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    // ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    // ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    // ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    // ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    // ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    // ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    // ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+    // ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+// ]
+
 
 console.log(myMap);
 
@@ -894,6 +915,7 @@ function fastestTimes(values, cat_r, cat_c, mouse_r, mouse_c, row_path, col_path
 
 }
 
+
 //CALCULATE THE MAXIMUM SHORTEST POSSIBLE PATH BETWEEN THE CAT AND MOUSE
 
 const clearPaths = [];
@@ -921,7 +943,6 @@ let pathLengthMatrix = createPathMatrix(map);
 let pathLengths = {};  // Dictionary to store path lengths
 
 for (let i = 0; i < clearPaths.length; i++) {
-  let local_max = 0;
   // for (let j = i + 1; j < clearPaths.length; j++) {
   for (let j = 0; j < clearPaths.length; j++) {
     if(i != j && i > j) {
@@ -934,15 +955,6 @@ for (let i = 0; i < clearPaths.length; i++) {
       if(max_rows.length > max_distance) {
         max_distance = max_rows.length;
       }
-      // if(max_rows.length > local_max) {
-      //   local_max = max_rows.length;
-      //   if(max_rows.length > pathLengthMatrix[end[0]][end[1]]) {
-      //     pathLengthMatrix[end[0]][end[1]] = local_max;
-      //   }
-      //   if(max_rows.length > pathLengthMatrix[start[0]][[start[1]]]) {
-      //     pathLengthMatrix[start[0]][[start[1]]] = local_max;
-      //   }
-      // }
 
       if(max_rows.length > pathLengthMatrix[end[0]][end[1]]) {
         pathLengthMatrix[end[0]][end[1]] = max_rows.length;
@@ -972,6 +984,323 @@ console.log(count);
 
 console.log("max distance is ");
 console.log(max_distance);
+
+
+//A STAR ---- ALGORITHM
+
+class A_priorityQueue {
+  constructor() {
+    this.heap = [];
+  }
+
+  // Helper function to get the index of the parent of a node
+  getParentIndex(index) {
+    return Math.floor((index - 1) / 2);
+  }
+
+  // Helper function to get the index of the left child of a node
+  getLeftChildIndex(index) {
+    return 2 * index + 1;
+  }
+
+  // Helper function to get the index of the right child of a node
+  getRightChildIndex(index) {
+    return 2 * index + 2;
+  }
+
+  // Helper function to swap two elements in the heap
+  swap(index1, index2) {
+    const temp = this.heap[index1];
+    this.heap[index1] = this.heap[index2];
+    this.heap[index2] = temp;
+  }
+
+  clear() {
+    this.heap = [];
+  }
+
+  isEmpty() {
+    return this.heap.length === 0;
+  }
+
+  // Helper function to bubble up the element at the given index
+  bubbleUp(index) {
+    // If the current node is the root (index 0), no need to bubble up further
+    if (index === 0) return;
+
+    const parentIndex = this.getParentIndex(index);
+
+    // If the current node has higher priority (smaller s_d) than its parent, swap them and continue bubbling up
+    if ((this.heap[index].s_d + this.heap[index].heuristic) < (this.heap[parentIndex].s_d + this.heap[parentIndex].heuristic)) {
+      this.swap(index, parentIndex);
+      this.bubbleUp(parentIndex);
+    }
+  }
+
+  // Helper function to bubble down the element at the given index
+  bubbleDown(index) {
+    const leftChildIndex = this.getLeftChildIndex(index);
+    const rightChildIndex = this.getRightChildIndex(index);
+    let highestPriorityIndex = index;
+
+    // Find the node with the highest priority (smallest s_d) among the current node and its two children
+    if (
+      leftChildIndex < this.heap.length &&
+      (this.heap[leftChildIndex].s_d + this.heap[leftChildIndex].heuristic) < (this.heap[highestPriorityIndex].s_d + this.heap[highestPriorityIndex].heuristic)
+    ) {
+      highestPriorityIndex = leftChildIndex;
+    }
+
+    if (
+      rightChildIndex < this.heap.length &&
+      (this.heap[rightChildIndex].s_d + this.heap[rightChildIndex].heuristic) < (this.heap[highestPriorityIndex].s_d + this.heap[highestPriorityIndex].heuristic)
+    ) {
+      highestPriorityIndex = rightChildIndex;
+    }
+
+    // If the node with the highest priority is not the current node, swap them and continue bubbling down
+    if (highestPriorityIndex !== index) {
+      this.swap(index, highestPriorityIndex);
+      this.bubbleDown(highestPriorityIndex);
+    }
+  }
+
+  // Insert a new node into the priority queue
+  insert(node) {
+    this.heap.push(node);
+    this.bubbleUp(this.heap.length - 1);
+  }
+
+  // Remove and return the node with the highest priority (smallest s_d) from the priority queue
+  extractMin() {
+    if (this.heap.length === 0) return null;
+
+    // If there is only one node, remove and return it
+    if (this.heap.length === 1) return this.heap.pop();
+
+    // Otherwise, remove the node with the highest priority (root), replace it with the last node,
+    // and then bubble down the new root to its correct position
+    const minNode = this.heap[0];
+    this.heap[0] = this.heap.pop();
+    this.bubbleDown(0);
+    return minNode;
+  }
+}
+
+const a_pq = new A_priorityQueue();
+
+// Define the Node object
+class A_node {
+  constructor() {
+    this.value = 0;
+    this.coordinate_x = 0;
+    this.coordinate_y = 0;
+    this.prev_row = 0;
+    this.prev_col = 0;
+    this.visited = 0; // BOOL TO INT
+    this.s_d = 0;
+    this.heuristic = 0;
+    this.north = null;
+    this.south = null;
+    this.east = null;
+    this.west = null;
+    this.next = null; // for writing to fastest times
+    this.target_x = 0;
+    this.target_y = 0;
+  }
+}
+
+// function read_write_values(wall_mat) {
+//   //This function codes in the path lengths of the map
+//   const num_columns = map[0].length - 2
+//   const num_rows = map.length - 2
+//   const array = new Array(num_columns * num_rows); // create matrix of tiles
+
+//   let k = 0;
+//   // // 0th ROW IS WALL-LESS
+//   for(let i = 0; i < map.length; i++) {
+//     if(i === 0 || i === (map.length - 1)) {
+//         //don't account for border walls
+//         continue;
+//     }
+
+//     for(let j = 0; j < map[0].length; j++) {
+//       if(j === 0 || j === (map[0].length - 1)) {
+//         //don't account for border walls
+//         continue;
+//       }
+//       if(wall_mat[i][j] === '-') {
+//         //we have a wall
+//         array[k] = num_columns * num_rows
+//       }
+//       else {
+//         //we have a path
+//         array[k] = 1
+//       }
+//       k++;
+//     }
+//   }
+//   return array;
+// }
+
+function a_relax_node(node) {
+  let key_return = null; // The next node with the shortest distance to explore
+
+  if (node.north !== null) {
+    const north_node = node.north;
+
+    if (node.s_d + north_node.value < north_node.s_d) {
+      north_node.s_d = node.s_d + north_node.value;
+      north_node.prev_row = node.coordinate_x;
+      north_node.prev_col = node.coordinate_y;
+
+    }
+    if(!north_node.visited) {
+      a_pq.insert(north_node);
+    }
+
+  }
+
+  if (node.west !== null) {
+    const west_node = node.west;
+
+    if (node.s_d + west_node.value < west_node.s_d) {
+      west_node.s_d = node.s_d + west_node.value;
+      west_node.prev_row = node.coordinate_x;
+      west_node.prev_col = node.coordinate_y;
+    }
+    if(!west_node.visited) {
+      a_pq.insert(west_node);
+    }
+  }
+
+  if (node.east !== null) {
+    const east_node = node.east;
+
+    if (node.s_d + east_node.value < east_node.s_d) {
+      east_node.s_d = node.s_d + east_node.value;
+      east_node.prev_row = node.coordinate_x;
+      east_node.prev_col = node.coordinate_y;
+    }
+
+    if(!east_node.visited) {
+      a_pq.insert(east_node);
+    }
+  }
+
+  if (node.south !== null) {
+    const south_node = node.south;
+
+    if (node.s_d + south_node.value < south_node.s_d) {
+      south_node.s_d = node.s_d + south_node.value;
+      south_node.prev_row = node.coordinate_x;
+      south_node.prev_col = node.coordinate_y;
+    }
+
+    if(!south_node.visited) {
+      a_pq.insert(south_node);
+    }
+  }
+
+  node.visited = 1; // 1 instead of true
+  if(node.coordinate_x === node.target_x && node.coordinate_y === node.target_y) {
+    a_pq.clear(); //found our prized destination
+  }
+}
+
+// function grab_path(matrix, c_r, c_c, m_r, m_c, path_row, path_col) {
+//   let ctr = 0;
+//   // console.log(matrix);
+
+//   while (c_r !== m_r || c_c !== m_c) {
+//     let val = matrix[c_r][c_c];
+//     c_r = val.prev_row;
+//     c_c = val.prev_col;
+//     path_row[ctr] = c_r;
+//     path_col[ctr] = c_c;
+
+//     ctr++;
+//   }
+//   // Prevent loose ends of the array
+//   path_row[ctr] = -1;
+//   path_col[ctr] = -1;
+// }
+
+function a_fastestTimes(values, cat_r, cat_c, mouse_r, mouse_c, row_path, col_path) {
+  //clear previous values of the paths
+  row_path.length = 0;
+  col_path.length = 0;    
+
+  const rows = (map.length - 2);
+  const columns = (map[0].length - 2);
+  const matrix = [];
+  let k = 0;
+
+  for (let i = 0; i < rows; i++) {
+    matrix[i] = [];
+    for (let j = 0; j < columns; j++) {
+      const a_node = {
+        value: values[k],
+        coordinate_x: i,
+        coordinate_y: j,
+        prev_row: 0,
+        prev_col: 0,
+        visited: 0,
+        s_d: 32767,
+        heuristic: getPathLength([i, j], [cat_r, cat_c]) - 1,
+        north: null,
+        south: null,
+        east: null,
+        west: null,
+        next: null,
+        target_x: cat_r,
+        target_y: cat_c
+      };
+      matrix[i][j] = a_node;
+      k++;
+    }
+  }
+
+  // Connect neighboring nodes
+  for (let i = 0; i < rows; i++) {
+    for (let j = 0; j < columns; j++) {
+      if (i === 0) {
+        // First row
+        matrix[i][j].north = null;
+      } else {
+        matrix[i][j].north = matrix[i - 1][j];
+      }
+      if (j === 0) {
+        // First column
+        matrix[i][j].west = null;
+      } else {
+        matrix[i][j].west = matrix[i][j - 1];
+      }
+      if (i === rows - 1) {
+        // Last row
+        matrix[i][j].south = null;
+      } else {
+        matrix[i][j].south = matrix[i + 1][j];
+      }
+      if (j === columns - 1) {
+        // Last column
+        matrix[i][j].east = null;
+      } else {
+        matrix[i][j].east = matrix[i][j + 1];
+      }
+    }
+  }
+
+  const parent_node = matrix[mouse_r][mouse_c];
+  parent_node.s_d = parent_node.value;
+  a_pq.clear();
+  a_pq.insert(parent_node);
+  while(!a_pq.isEmpty()) {
+    a_relax_node(a_pq.extractMin());
+  }
+  grab_path(matrix, cat_r, cat_c, mouse_r, mouse_c, row_path, col_path);
+}
+
 //RL PARAMETERS -----------------------------------------------------------------------------
 const KEEP_DISTANCE_EXIT_ATTEMPT = max_distance  //maintain distance from cat AND get closer to exit
 const KEEP_DISTANCE = max_distance / 2  //maintain distance from cat AND get further/maintain distance from exit
@@ -1498,7 +1827,13 @@ function animate() {
     if(myCats[0].rows.length === 0) {
       //FIRST ITERATION SO WE HAVE TO CREATE THE INITIAL OBSERVATION
       my_matrix = read_write_values(map)
-      fastestTimes(my_matrix, get_discrete_Y(myCats[0].position.y), get_discrete_X(myCats[0].position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), myCats[0].rows, myCats[0].col)
+
+      // fastestTimes(my_matrix, get_discrete_Y(myCats[0].position.y), get_discrete_X(myCats[0].position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), myCats[0].rows, myCats[0].col)
+      // console.log(myCats[0].rows)
+      // console.log(myCats[0].col)
+      a_fastestTimes(my_matrix, get_discrete_Y(myCats[0].position.y), get_discrete_X(myCats[0].position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), myCats[0].rows, myCats[0].col)
+      // console.log(myCats[0].rows)
+      // console.log(myCats[0].col)
       catPaths = []
       catPaths.push(
         new CatPath({
@@ -1825,7 +2160,17 @@ function animate() {
     }
       my_matrix = read_write_values(map)
 
-      fastestTimes(my_matrix, get_discrete_Y(myCats[i].position.y), get_discrete_X(myCats[i].position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), myCats[i].rows, myCats[i].col)
+      //fastestTimes(my_matrix, get_discrete_Y(myCats[i].position.y), get_discrete_X(myCats[i].position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), myCats[i].rows, myCats[i].col)
+      // console.log(myCats[i].rows);
+      // console.log(myCats[i].col);
+      // console.log(get_discrete_Y(myCats[i].position.y))
+      // console.log(get_discrete_X(myCats[i].position.x))
+      // fastestTimes(my_matrix, get_discrete_Y(myCats[0].position.y), get_discrete_X(myCats[0].position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), myCats[0].rows, myCats[0].col)
+      // console.log(myCats[0].rows)
+      // console.log(myCats[0].col)
+      a_fastestTimes(my_matrix, get_discrete_Y(myCats[0].position.y), get_discrete_X(myCats[0].position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), myCats[0].rows, myCats[0].col)
+      // console.log(myCats[0].rows)
+      // console.log(myCats[0].col)
       catPaths = []
       catPaths.push(
         new CatPath({
@@ -1972,7 +2317,14 @@ function animate() {
     }
     let new_q;
 
+    // console.log("getting")
+    // console.log(mouse_row)
+    // console.log(mouse_col)
+    // console.log(direction)
+    // console.log(myCats[0].rows.length);
+    
     let new_stateIndex = getStateIndex(mouse_row, mouse_col, direction, myCats[0].rows.length)
+
 
     let current_q = Qtable[state_Index][action];
 
@@ -2003,6 +2355,7 @@ function animate() {
     old_exit_direction = exit_direction;
 
     if(restart || restart2) {
+      // console.log("restarted")
       episodeRewards = 0;
       timeoutCtr = 0;
       //reset parameters;
