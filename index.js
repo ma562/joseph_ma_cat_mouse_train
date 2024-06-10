@@ -928,7 +928,9 @@ for (let i = 0; i < clearPaths.length; i++) {
         if(max_rows.length > pathLengthMatrix[end[0]][end[1]]) {
           pathLengthMatrix[end[0]][end[1]] = local_max;
         }
-        pathLengthMatrix[start[0]][[start[1]]] = local_max;
+        if(max_rows.length > pathLengthMatrix[start[0]][[start[1]]]) {
+          pathLengthMatrix[start[0]][[start[1]]] = local_max;
+        }
       }
       count++;
 
