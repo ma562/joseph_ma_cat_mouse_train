@@ -1,7 +1,7 @@
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 const VELOCITY = 40;
-let UPDATE_FREQUENCY = 15;
+let UPDATE_FREQUENCY = 85;
 let gameOver = false;   //checks if the game is over
 let myCats = [];      //an array of cats
 let direction_col;
@@ -324,7 +324,7 @@ const mapCollection = {
 // Event listeners for the UI elements
 document.getElementById('speed-slider').addEventListener('input', (event) => {
   const speedValue = event.target.value;
-  document.getElementById('speed-value').textContent = speedValue;
+  document.getElementById('speed-value').textContent = 100 - speedValue;
 
   UPDATE_FREQUENCY = parseInt(speedValue);
 });
