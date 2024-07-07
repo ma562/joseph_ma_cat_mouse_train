@@ -1,7 +1,7 @@
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 const VELOCITY = 40;
-let UPDATE_FREQUENCY = 85;
+let UPDATE_FREQUENCY = 15;
 let gameOver = false;   //checks if the game is over
 let myCats = [];      //an array of cats
 let direction_col;
