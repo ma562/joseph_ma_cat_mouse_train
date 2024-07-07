@@ -38,17 +38,56 @@ window.numCats = numCats;
 let myMap = JSON.parse(localStorage.getItem('mapConfiguration'));
 
 // myMap = [['-', ' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', '-'],
+//     ['-', '-', '-', '-', '-', ' ', ' ', ' ', ' ', '-', ' ', '-'],
+//     ['-', ' ', '-', ' ', '-', ' ', '-', '-', '-', '-', ' ', '-'],
+//     ['-', ' ', '-', ' ', '-', ' ', ' ', ' ', '-', ' ', ' ', '-'],
+//     ['-', ' ', '-', ' ', '-', ' ', '-', ' ', ' ', ' ', '-', '-'],
+//     ['-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', ' ', ' ', '-'],
+//     ['-', ' ', '-', ' ', ' ', ' ', ' ', ' ', '-', '-', ' ', '-'],
+//     ['-', ' ', '-', ' ', '-', '-', '-', ' ', '-', ' ', ' ', '-'],
+//     ['-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', '-'],
+//     ['-', ' ', ' ', ' ', '-', ' ', ' ', ' ', '-', ' ', ' ', '-'],
 //     ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+// ]
+// myMap = [['-', ' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
+// ]
+
+// myMap = [['-', ' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', '-', '-', ' ', ' ', '-', '-', '-', '-', ' ', ' ', ' ', '-', ' ', '-', ' ', '-'],
+//     ['-', ' ', '-', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', '-', ' ', '-'],
+//     ['-', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', '-', ' ', '-'],
+//     ['-', ' ', '-', '-', '-', ' ', '-', '-', '-', '-', '-', '-', ' ', '-', ' ', '-', ' ', '-'],
+//     ['-', ' ', ' ', ' ', '-', ' ', '-', ' ', ' ', '-', ' ', ' ', ' ', '-', ' ', '-', ' ', '-'],
+//     ['-', '-', '-', '-', '-', ' ', '-', ' ', ' ', '-', '-', '-', '-', '-', ' ', '-', ' ', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', '-', ' ', '-'],
+//     ['-', '-', '-', '-', '-', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', ' ', ' ', '-', ' ', '-', ' ', '-', '-', '-', '-', ' ', '-', '-', '-', '-', '-'],
+//     ['-', ' ', '-', '-', '-', ' ', '-', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', ' ', ' ', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', '-', '-', '-', ' ', '-', '-', '-'],
+//     ['-', ' ', '-', '-', '-', ' ', '-', '-', '-', ' ', ' ', ' ', ' ', '-', ' ', '-', ' ', '-'],
+//     ['-', ' ', ' ', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', '-'],
+//     ['-', ' ', '-', ' ', '-', '-', '-', '-', '-', '-', '-', ' ', ' ', '-', '-', '-', '-', '-'],
+//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
+//     ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
 // ]
 
 // myMap = [['-', ' ', '-', '-', '-', '-', '-'],
@@ -730,31 +769,22 @@ class Node {
 }
 
 function read_write_values(wall_mat) {
-  //This function codes in the path lengths of the map
-  const num_columns = map[0].length - 2
-  const num_rows = map.length - 2
-  const array = new Array(num_columns * num_rows); // create matrix of tiles
-
+  const num_columns = map[0].length - 2;
+  const num_rows = map.length - 2;
+  const array = new Array(num_columns * num_rows).fill(null);
   let k = 0;
-  // // 0th ROW IS WALL-LESS
-  for(let i = 0; i < map.length; i++) {
-    if(i === 0 || i === (map.length - 1)) {
-        //don't account for border walls
-        continue;
-    }
+  for (let i = 0; i < map.length; i++) {
+    if (i === 0 || i === (map.length - 1)) continue; // Skip border rows
 
-    for(let j = 0; j < map[0].length; j++) {
-      if(j === 0 || j === (map[0].length - 1)) {
-        //don't account for border walls
-        continue;
-      }
+    for (let j = 0; j < map[0].length; j++) {
+      if (j === 0 || j === (map[0].length - 1)) continue; // Skip border columns
+
+      //array[k] = wall_mat[i][j] === '-' ? null : 1; // Wall as null, path as 1
       if(wall_mat[i][j] === '-') {
-        //we have a wall
-        array[k] = num_columns * num_rows
+        array[k] = null;
       }
       else {
-        //we have a path
-        array[k] = 1
+        array[k] = 1;
       }
       k++;
     }
@@ -843,33 +873,35 @@ function grab_path(matrix, c_r, c_c, m_r, m_c, path_row, path_col) {
 }
 
 function fastestTimes(values, cat_r, cat_c, mouse_r, mouse_c, row_path, col_path) {
-  //clear previous values of the paths
   row_path.length = 0;
-  col_path.length = 0;    
+  col_path.length = 0;
 
-  const rows = (map.length - 2);
-  const columns = (map[0].length - 2);
+  const rows = map.length - 2;
+  const columns = map[0].length - 2;
   const matrix = [];
   let k = 0;
 
   for (let i = 0; i < rows; i++) {
     matrix[i] = [];
     for (let j = 0; j < columns; j++) {
-      const node = {
-        value: values[k],
-        coordinate_x: i,
-        coordinate_y: j,
-        prev_row: 0,
-        prev_col: 0,
-        visited: 0,
-        s_d: 32767,
-        north: null,
-        south: null,
-        east: null,
-        west: null,
-        next: null,
-      };
-      matrix[i][j] = node;
+      if (values[k] === null) {
+        matrix[i][j] = null;
+      } else {
+        matrix[i][j] = {
+          value: values[k],
+          coordinate_x: i,
+          coordinate_y: j,
+          prev_row: 0,
+          prev_col: 0,
+          visited: 0,
+          s_d: Infinity,
+          north: null,
+          south: null,
+          east: null,
+          west: null,
+          next: null,
+        };
+      }
       k++;
     }
   }
@@ -877,42 +909,57 @@ function fastestTimes(values, cat_r, cat_c, mouse_r, mouse_c, row_path, col_path
   // Connect neighboring nodes
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < columns; j++) {
-      if (i === 0) {
-        // First row
-        matrix[i][j].north = null;
-      } else {
-        matrix[i][j].north = matrix[i - 1][j];
-      }
-      if (j === 0) {
-        // First column
-        matrix[i][j].west = null;
-      } else {
-        matrix[i][j].west = matrix[i][j - 1];
-      }
-      if (i === rows - 1) {
-        // Last row
-        matrix[i][j].south = null;
-      } else {
-        matrix[i][j].south = matrix[i + 1][j];
-      }
-      if (j === columns - 1) {
-        // Last column
-        matrix[i][j].east = null;
-      } else {
-        matrix[i][j].east = matrix[i][j + 1];
+      if (matrix[i][j] !== null) {
+        // matrix[i][j].north = i > 0 ? matrix[i - 1][j] : null;
+        // matrix[i][j].west = j > 0 ? matrix[i][j - 1] : null;
+        // matrix[i][j].south = i < rows - 1 ? matrix[i + 1][j] : null;
+        // matrix[i][j].east = j < columns - 1 ? matrix[i][j + 1] : null;
+        if (i === 0) {
+          // First row
+          matrix[i][j].north = null;
+        } else {
+          matrix[i][j].north = matrix[i - 1][j];
+        }
+        if (j === 0) {
+          // First column
+          matrix[i][j].west = null;
+        } else {
+          matrix[i][j].west = matrix[i][j - 1];
+        }
+        if (i === rows - 1) {
+          // Last row
+          matrix[i][j].south = null;
+        } else {
+          matrix[i][j].south = matrix[i + 1][j];
+        }
+        if (j === columns - 1) {
+          // Last column
+          matrix[i][j].east = null;
+        } else {
+          matrix[i][j].east = matrix[i][j + 1];
+        }
       }
     }
   }
 
+  //console.log(matrix);
   const parent_node = matrix[mouse_r][mouse_c];
   parent_node.s_d = parent_node.value;
   pq.clear();
   pq.insert(parent_node);
-  while(!pq.isEmpty()) {
+  while (!pq.isEmpty()) {
     relax_node(pq.extractMin());
   }
+  // console.log(matrix);
   grab_path(matrix, cat_r, cat_c, mouse_r, mouse_c, row_path, col_path);
-
+  // console.log("cats");
+  // console.log(cat_r);
+  // console.log(cat_c);
+  // console.log("mouse");
+  // console.log(mouse_r);
+  // console.log(mouse_c);
+  // console.log(row_path);
+  // console.log(col_path);
 }
 
 
@@ -938,53 +985,60 @@ let max_col = []
 
 console.log(clearPaths.length);
 console.log(clearPaths);
-let pathLengthMatrix = createPathMatrix(map);
+// let pathLengthMatrix = createPathMatrix(map);
 
-let pathLengths = {};  // Dictionary to store path lengths
+// let pathLengths = {};  // Dictionary to store path lengths
 
-for (let i = 0; i < clearPaths.length; i++) {
-  // for (let j = i + 1; j < clearPaths.length; j++) {
-  for (let j = 0; j < clearPaths.length; j++) {
-    if(i != j && i > j) {
-      let start = clearPaths[i];
-      let end = clearPaths[j];
+// for (let i = 0; i < clearPaths.length; i++) {
+//   // for (let j = i + 1; j < clearPaths.length; j++) {
+//   for (let j = 0; j < clearPaths.length; j++) {
+//     if(i != j && i > j) {
+//       let start = clearPaths[i];
+//       let end = clearPaths[j];
 
-      my_matrix = read_write_values(map)
+//       my_matrix = read_write_values(map)
 
-      fastestTimes(my_matrix, start[0], start[1], end[0], end[1], max_rows, max_col)
-      if(max_rows.length > max_distance) {
-        max_distance = max_rows.length;
-      }
+//       fastestTimes(my_matrix, start[0], start[1], end[0], end[1], max_rows, max_col)
+//       if(max_rows.length > max_distance) {
+//         max_distance = max_rows.length;
+//       }
 
-      if(max_rows.length > pathLengthMatrix[end[0]][end[1]]) {
-        pathLengthMatrix[end[0]][end[1]] = max_rows.length;
-      }
-      if(max_rows.length > pathLengthMatrix[start[0]][start[1]]) {
-        pathLengthMatrix[start[0]][start[1]] = max_rows.length;
-      }
-      count++;
+//       if(max_rows.length > pathLengthMatrix[end[0]][end[1]]) {
+//         pathLengthMatrix[end[0]][end[1]] = max_rows.length;
+//       }
+//       if(max_rows.length > pathLengthMatrix[start[0]][start[1]]) {
+//         pathLengthMatrix[start[0]][start[1]] = max_rows.length;
+//       }
+//       count++;
 
-      let key = JSON.stringify([start, end].sort());
-      pathLengths[key] = max_rows.length;
-    }
-  }
+//       let key = JSON.stringify([start, end].sort());
+//       pathLengths[key] = max_rows.length;
+//     }
+//   }
+// }
+
+// function getPathLength(point1, point2) {
+//   let key = JSON.stringify([point1, point2].sort());
+//   return pathLengths[key] || null;  // Return the path length or null if not found
+// }
+
+function getPathLength(start, end) {
+    const [i, j] = start;
+    const [cat_r, cat_c] = end;
+    
+    // Calculate the Manhattan distance
+    const distance = Math.abs(i - cat_r) + Math.abs(j - cat_c);
+    
+    return distance;
 }
 
-function getPathLength(point1, point2) {
-  let key = JSON.stringify([point1, point2].sort());
-  return pathLengths[key] || null;  // Return the path length or null if not found
-}
 
-console.log(pathLengthMatrix);
+// console.log(pathLengthMatrix);
 console.log("help!");
-console.log(pathLengths);
+// console.log(pathLengths);
 
-console.log(Object.keys(pathLengths).length);
-console.log(count);
-
-console.log("max distance is ");
-console.log(max_distance);
-
+// console.log(Object.keys(pathLengths).length);
+// console.log(count);
 
 //A STAR ---- ALGORITHM
 
@@ -1236,57 +1290,69 @@ function a_fastestTimes(values, cat_r, cat_c, mouse_r, mouse_c, row_path, col_pa
   const matrix = [];
   let k = 0;
 
+
   for (let i = 0; i < rows; i++) {
     matrix[i] = [];
     for (let j = 0; j < columns; j++) {
-      const a_node = {
-        value: values[k],
-        coordinate_x: i,
-        coordinate_y: j,
-        prev_row: 0,
-        prev_col: 0,
-        visited: 0,
-        s_d: 32767,
-        heuristic: getPathLength([i, j], [cat_r, cat_c]) - 1,
-        north: null,
-        south: null,
-        east: null,
-        west: null,
-        next: null,
-        target_x: cat_r,
-        target_y: cat_c
-      };
-      matrix[i][j] = a_node;
+      if(values[k] === null) {
+        matrix[i][j] = null;
+      }
+      else {
+        matrix[i][j] = {
+          value: values[k],
+          coordinate_x: i,
+          coordinate_y: j,
+          prev_row: 0,
+          prev_col: 0,
+          visited: 0,
+          s_d: 32767,
+          heuristic: getPathLength([i, j], [cat_r, cat_c]),
+          north: null,
+          south: null,
+          east: null,
+          west: null,
+          next: null,
+          target_x: cat_r,
+          target_y: cat_c
+        };
+      }
+
       k++;
     }
   }
 
-  // Connect neighboring nodes
+
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < columns; j++) {
-      if (i === 0) {
-        // First row
-        matrix[i][j].north = null;
-      } else {
-        matrix[i][j].north = matrix[i - 1][j];
-      }
-      if (j === 0) {
-        // First column
-        matrix[i][j].west = null;
-      } else {
-        matrix[i][j].west = matrix[i][j - 1];
-      }
-      if (i === rows - 1) {
-        // Last row
-        matrix[i][j].south = null;
-      } else {
-        matrix[i][j].south = matrix[i + 1][j];
-      }
-      if (j === columns - 1) {
-        // Last column
-        matrix[i][j].east = null;
-      } else {
-        matrix[i][j].east = matrix[i][j + 1];
+      if (matrix[i][j] !== null) {
+        // matrix[i][j].north = i > 0 ? matrix[i - 1][j] : null;
+        // matrix[i][j].west = j > 0 ? matrix[i][j - 1] : null;
+        // matrix[i][j].south = i < rows - 1 ? matrix[i + 1][j] : null;
+        // matrix[i][j].east = j < columns - 1 ? matrix[i][j + 1] : null;
+        if (i === 0) {
+          // First row
+          matrix[i][j].north = null;
+        } else {
+          matrix[i][j].north = matrix[i - 1][j];
+        }
+        if (j === 0) {
+          // First column
+          matrix[i][j].west = null;
+        } else {
+          matrix[i][j].west = matrix[i][j - 1];
+        }
+        if (i === rows - 1) {
+          // Last row
+          matrix[i][j].south = null;
+        } else {
+          matrix[i][j].south = matrix[i + 1][j];
+        }
+        if (j === columns - 1) {
+          // Last column
+          matrix[i][j].east = null;
+        } else {
+          matrix[i][j].east = matrix[i][j + 1];
+        }
       }
     }
   }
@@ -1300,17 +1366,6 @@ function a_fastestTimes(values, cat_r, cat_c, mouse_r, mouse_c, row_path, col_pa
   }
   grab_path(matrix, cat_r, cat_c, mouse_r, mouse_c, row_path, col_path);
 }
-
-//RL PARAMETERS -----------------------------------------------------------------------------
-const KEEP_DISTANCE_EXIT_ATTEMPT = max_distance  //maintain distance from cat AND get closer to exit
-const KEEP_DISTANCE = max_distance / 2  //maintain distance from cat AND get further/maintain distance from exit
-const ESCAPE_ATTEMPT = max_distance   //mouse gets closer to cat, exit gets closer to mouse, exit is closer to mouse than cat is to mouse
-const CAUGHT = -max_distance * 3
-const ESCAPE = max_distance * 3
-
-const LEARNING_RATE = 0.1
-const DISCOUNT = 0.95
-//-----------------------------------------------------------------------------
 
 
 
@@ -1420,10 +1475,13 @@ for (let rowIndex = 0; rowIndex < newPathMatrix.length; rowIndex++) {
     if(newPathMatrix[rowIndex][colIndex] !== -2) {
       //check all paths. 
       my_matrix = read_write_values(map);
-      fastestTimes(my_matrix, rowIndex, colIndex, 0, 0, max_rows, max_col);
+      a_fastestTimes(my_matrix, rowIndex, colIndex, 0, 0, max_rows, max_col);
       newPathMatrix[rowIndex][colIndex] = max_rows.length   //distance to exit
       if(max_rows.length != 0) {
         pathDirectionMatrix[rowIndex][colIndex] = getCatDirection(rowIndex, colIndex, max_rows[0], max_col[0]);
+        if(max_rows.length > max_distance) {
+          max_distance = max_rows.length
+        }
       }
       // pathDirectionMatrix[rowIndex][colIndex] = 
       //getExitDirection(max_rows[0], max_col[0], rowIndex, colIndex);
@@ -1435,6 +1493,8 @@ for (let rowIndex = 0; rowIndex < newPathMatrix.length; rowIndex++) {
   }
 }
 
+max_distance = Math.round(max_distance * 1.2);
+
 console.log("our new path matrix is:");
 console.log(newPathMatrix);
 
@@ -1445,6 +1505,22 @@ console.log("path count");
 console.log(pathCount);
 console.log("wall count");
 console.log(wallCount);
+
+console.log("max distance is ");
+console.log(max_distance);
+
+
+//RL PARAMETERS -----------------------------------------------------------------------------
+// const KEEP_DISTANCE_EXIT_ATTEMPT = max_distance  //maintain distance from cat AND get closer to exit
+// const KEEP_DISTANCE = max_distance / 2  //maintain distance from cat AND get further/maintain distance from exit
+// const ESCAPE_ATTEMPT = max_distance   //mouse gets closer to cat, exit gets closer to mouse, exit is closer to mouse than cat is to mouse
+// const CAUGHT = -max_distance * 3
+// const ESCAPE = max_distance * 3
+
+const LEARNING_RATE = 0.1
+const DISCOUNT = 0.95
+//-----------------------------------------------------------------------------
+
 
 
 //CREATING THE QTABLE -----------------------------------------------------------------------------
@@ -1517,41 +1593,42 @@ let numStates = 0;
 //   }
 // }
 
-let extendedStateSpaceMapping = {};
-let stateIndex = 0;
+// let extendedStateSpaceMapping = {};
+// let stateIndex = 0;
 
 
-// Note: Adjusted to account for 0-based indices for the inner 8x8 grid
-for (let row = 1; row < map.length - 1; row++) {
-  for (let col = 1; col < map[row].length - 1; col++) {
-    if (map[row][col] === ' ') {
-      // Check for walls around the current position
-      let possibleCatDirections = [];
-      if (map[row - 1][col] === ' ' && (row !== 1 || col !== 1)) { // Check for wall above (we don't have to check at the exit)
-        possibleCatDirections.push(0); // Cat can come from 'up'
-      }
-      if (map[row][col + 1] === ' ') { // Check for wall to the right
-        possibleCatDirections.push(1); // Cat can come from 'left'    //right
-      }
-      if (map[row][col - 1] === ' ') { // Check for wall to the left
-        possibleCatDirections.push(2); // Cat can come from 'right'   //left
-      }
-      if (map[row + 1][col] === ' ') { // Check for wall below
-        possibleCatDirections.push(3); // Cat can come from 'down'
-      }
-      for (let catDirection of possibleCatDirections) {
-        for (let distance = 1; distance <= pathLengthMatrix[row - 1][col - 1]; distance++) {
-          let key = `${row - 1},${col - 1}_${catDirection}_${distance}`;
-          extendedStateSpaceMapping[key] = stateIndex++;
-          numStates++;
-        }
-      }
-    }
-  }
-}
+// // Note: Adjusted to account for 0-based indices for the inner 8x8 grid
+// for (let row = 1; row < map.length - 1; row++) {
+//   for (let col = 1; col < map[row].length - 1; col++) {
+//     if (map[row][col] === ' ') {
+//       // Check for walls around the current position
+//       let possibleCatDirections = [];
+//       if (map[row - 1][col] === ' ' && (row !== 1 || col !== 1)) { // Check for wall above (we don't have to check at the exit)
+//         possibleCatDirections.push(0); // Cat can come from 'up'
+//       }
+//       if (map[row][col + 1] === ' ') { // Check for wall to the right
+//         possibleCatDirections.push(1); // Cat can come from 'left'    //right
+//       }
+//       if (map[row][col - 1] === ' ') { // Check for wall to the left
+//         possibleCatDirections.push(2); // Cat can come from 'right'   //left
+//       }
+//       if (map[row + 1][col] === ' ') { // Check for wall below
+//         possibleCatDirections.push(3); // Cat can come from 'down'
+//       }
+//       for (let catDirection of possibleCatDirections) {
+//         for (let distance = 1; distance <= pathLengthMatrix[row - 1][col - 1]; distance++) {
+//           let key = `${row - 1},${col - 1}_${catDirection}_${distance}`;
+//           extendedStateSpaceMapping[key] = stateIndex++;
+//           numStates++;
+//         }
+//       }
+//     }
+//   }
+// }
 
-console.log("num states");
-console.log(numStates);
+// console.log("num states");
+// numStates = 6000;
+// console.log(numStates);
 
 
 function calculateDecayRate(n) {
@@ -1561,11 +1638,13 @@ function calculateDecayRate(n) {
 }
 
 // Example usage:
-const n = numStates / 2 + pathCount * max_distance / 3;  // Example value for the power
+const n = max_distance * max_distance + pathCount * max_distance / 3;   //pathCount * pathCount + pathCount * max_distance / 3;  // Example value for the power
 const decayRate = calculateDecayRate(n);
 console.log(`The decay rate x for power n=${n} is: ${decayRate}`);
 
-let EPS_DECAY = decayRate;
+// decayRate = ;
+
+let EPS_DECAY = decayRate;  //0.997715350322031; //decayRate;
 // Function to get the extended state index
 // function getStateIndex(row, col, catDirection, mouseCatDistance, exitDirection) {
 //   const key = `${row},${col}_${catDirection}_${mouseCatDistance}_${exitDirection}`;
@@ -1585,9 +1664,16 @@ function getStateIndex(row, col, catDirection, mouseCatDistance) {
 
 // Initialize the Q-table with all states having Q-values for possible actions
 let Qtable = {};
-for (const key in extendedStateSpaceMapping) {
-  Qtable[key] = [0, 0, 0, 0]; // Four possible actions
+// for (const key in extendedStateSpaceMapping) {
+//   Qtable[key] = [0, 0, 0, 0]; // Four possible actions
+// }
+
+function initializeState(Qtable, stateKey) {
+  if (!(stateKey in Qtable)) {
+    Qtable[stateKey] = [0, 0, 0, 0]; // Initialize Q-values for four possible actions
+  }
 }
+
 // console.log(Object.keys(Qtable).length)
 // console.log(Qtable);
 
@@ -1834,6 +1920,11 @@ function animate() {
       a_fastestTimes(my_matrix, get_discrete_Y(myCats[0].position.y), get_discrete_X(myCats[0].position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), myCats[0].rows, myCats[0].col)
       // console.log(myCats[0].rows)
       // console.log(myCats[0].col)
+      if(myCats[0].rows.length > max_distance) {
+        max_distance = myCats[0].rows.length;
+        //UPDATE REWARD PARAMETER
+        console.log("WE HAD TO UPDATE THE REWARD PARAMETER TFFFFFFF");
+      }
       catPaths = []
       catPaths.push(
         new CatPath({
@@ -1870,15 +1961,16 @@ function animate() {
     }
     let mouse_row = get_discrete_Y(player.position.y);
     let mouse_col = get_discrete_X(player.position.x);
-
     direction = getCatDirection(mouse_row, mouse_col, row_incoming, col_incoming);
     //getStateIndex(row, col, catDirection, mouseCatDistance, exitDirection)
 
     state_Index = getStateIndex(mouse_row, mouse_col, direction, myCats[0].rows.length)
-    
+    initializeState(Qtable, state_Index); 
+
     old_cat_distance = myCats[0].rows.length;
     old_exit_distance = newPathMatrix[mouse_row][mouse_col];
 
+    
     if (Math.random() > epsilon) {
       EXPLOITATION = true;
       action = getBestAction(Qtable, state_Index);
@@ -2171,6 +2263,11 @@ function animate() {
       a_fastestTimes(my_matrix, get_discrete_Y(myCats[0].position.y), get_discrete_X(myCats[0].position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), myCats[0].rows, myCats[0].col)
       // console.log(myCats[0].rows)
       // console.log(myCats[0].col)
+      if(myCats[0].rows.length > max_distance) {
+        max_distance = myCats[0].rows.length;
+        //UPDATE REWARD PARAMETER
+        console.log("WE HAD TO UPDATE THE REWARD PARAMETER TFFFFFFF");
+      }
       catPaths = []
       catPaths.push(
         new CatPath({
@@ -2231,7 +2328,7 @@ function animate() {
     let mouse_row = get_discrete_Y(player.position.y);
     let mouse_col = get_discrete_X(player.position.x);
 
-    if(myCats[0].rows.length === 2) {
+    if(myCats[0].rows.length <= 2) {
       row_incoming = get_discrete_Y(myCats[0].position.y);
       col_incoming = get_discrete_X(myCats[0].position.x);
     }
@@ -2240,29 +2337,35 @@ function animate() {
       col_incoming = myCats[0].col[myCats[0].col.length - 3];
     }
 
+
     direction = getCatDirection(mouse_row, mouse_col, row_incoming, col_incoming);
     exit_direction = pathDirectionMatrix[mouse_row][mouse_col];//getCatDirection(mouse_row, mouse_col, 0, 0);   //check our exit direction
 
     deadEnd = getDisconnectivityValue(disconnect, mouse_row, mouse_col, direction);
+    if(restart) {
+      deadEnd = old_dead_end;
+    }
     updateDeadEnd();
+
+    let exceptions = false;
     //console.log(type(deadEnd));
     //console.log(deadEnd);
 
-    if((deadEnd == old_dead_end) && !deadEnd) {
+    if((deadEnd === old_dead_end) && !deadEnd) {
       //we are not in a dead end and we did not change dead end status
       if ((old_cat_distance === new_cat_distance) && (new_exit_distance < old_exit_distance)) {
         //the mouse maintains distance from cat
         //the mouse gets closer to exit
-        reward = KEEP_DISTANCE_EXIT_ATTEMPT;
+        reward = max_distance;  //KEEP_DISTANCE_EXIT_ATTEMPT;
       }
-      else if((old_cat_distance - 1 == new_cat_distance) && (new_exit_distance < old_exit_distance) && ((new_exit_distance) < cat_to_exit)) {
+      else if((old_cat_distance - 1 === new_cat_distance) && (new_exit_distance < old_exit_distance) && ((new_exit_distance) < cat_to_exit)) {
         //not putting full effort into escaping.
         reward = -(max_distance - myCats[0].rows.length);
       }
       else if(old_cat_distance === new_cat_distance && (new_exit_distance >= old_exit_distance)) {
         //the mouse maintains distance from cat
         //the mouse gets further or same distance from exit
-        reward = KEEP_DISTANCE;
+        reward = max_distance / 2;  //KEEP_DISTANCE;
         //the mouse was actually close enough to the exit to escape but did not take the opportunity to do so
         //that is if the old cat was not coming from the old direction of the exit
         if(old_direction !== old_exit_direction) {
@@ -2273,48 +2376,63 @@ function animate() {
         //the mouse gets closer to cat
         //the exit got closer to mouse
         //the exit is closer to mouse than cat is to mouse
-        reward = ESCAPE_ATTEMPT;      //WEE NEED TO EDIT THISS - because sometimes we are rushing to the exit and backtrack at a cat running behind us
+        reward = max_distance; //ESCAPE_ATTEMPT;      //WEE NEED TO EDIT THISS - because sometimes we are rushing to the exit and backtrack at a cat running behind us
       }
       else {
         //the cat got closer (penalize harder if the cat is close.)
         reward = -(max_distance - myCats[0].rows.length);
       } 
     }
-    else if ((deadEnd == old_dead_end) && deadEnd) {
+    else if ((deadEnd === old_dead_end) && deadEnd) {
       //we are in a dead end and we did not change dead end status
       if(old_cat_distance === new_cat_distance) {
         //the mouse maintains distance from cat
         //penalize - because we have to escape
-        reward = -max_distance; //-(max_distance - myCats[0].rows.length);
+        //console.log("OH ISN'T THIS TEERRIBLE");
+        reward = -(max_distance - myCats[0].rows.length) - 0.5 * max_distance; //-(max_distance - myCats[0].rows.length);
       }
-      else if(old_cat_distance - 1 == new_cat_distance) {
+      else if(old_cat_distance - 1 === new_cat_distance) {
         //the mouse is basically standing there waiting to get caught SMH
-        reward = -max_distance;
+        reward = -(max_distance - myCats[0].rows.length) - 0.5 * max_distance;
       }
       else {
-        reward = max_distance;
+        reward = (max_distance - myCats[0].rows.length) + 0.5 * max_distance;
       }
+      exceptions = true;
     }
     else {
       //we changed dead end status
       if(deadEnd) {
-        reward = CAUGHT;    //penalize for switching to dead end status
+        reward = -max_distance * 1.5; //CAUGHT;    //penalize for switching to dead end status
       }
       else {
-        reward = ESCAPE;
+        reward = max_distance * 1.5;  //ESCAPE;
       }
     }
+    
+    if(restart) {
+      reward = -max_distance * 1.5;
+      if(exceptions) {
+        reward = 0;
+      }
+    }
+
+    if(restart2) {
+      reward = max_distance * 1.5;
+    }
+
     episodeRewards += reward;
     document.getElementById('rewards-value').textContent = reward;
     document.getElementById('eRewards-value').textContent = episodeRewards;
 
-    if(restart) {
-      reward = CAUGHT;
-    }
 
-    if(restart2) {
-      reward = ESCAPE;
-    }
+    // const KEEP_DISTANCE_EXIT_ATTEMPT = max_distance  //maintain distance from cat AND get closer to exit
+    // const KEEP_DISTANCE = max_distance / 2  //maintain distance from cat AND get further/maintain distance from exit
+    // const ESCAPE_ATTEMPT = max_distance   //mouse gets closer to cat, exit gets closer to mouse, exit is closer to mouse than cat is to mouse
+    // const CAUGHT = -max_distance * 3
+    // const ESCAPE = max_distance * 3
+
+
     let new_q;
 
     // console.log("getting")
@@ -2323,16 +2441,21 @@ function animate() {
     // console.log(direction)
     // console.log(myCats[0].rows.length);
     
-    let new_stateIndex = getStateIndex(mouse_row, mouse_col, direction, myCats[0].rows.length)
-
+    let new_stateIndex = getStateIndex(mouse_row, mouse_col, direction, myCats[0].rows.length);
+    if(direction !== null) {
+      initializeState(Qtable, new_stateIndex);
+    }
 
     let current_q = Qtable[state_Index][action];
 
     let max_future_q = getBestAction(Qtable, new_stateIndex);
 
     updateStateHistory(stateHistory, state_Index, maxHistory);
-    if(reward === ESCAPE) {
-      new_q = ESCAPE
+    if(reward === max_distance * 3) {
+      new_q = max_distance * 3
+    }
+    else if(reward === -max_distance * 3) {
+      new_q = -max_distance * 3;
     }
     else {
       new_q = (1 - LEARNING_RATE) * current_q + LEARNING_RATE * (reward + DISCOUNT * max_future_q);
