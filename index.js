@@ -324,9 +324,9 @@ const mapCollection = {
 // Event listeners for the UI elements
 document.getElementById('speed-slider').addEventListener('input', (event) => {
   const speedValue = event.target.value;
-  document.getElementById('speed-value').textContent = 100 - speedValue;
+  document.getElementById('speed-value').textContent = speedValue;
 
-  UPDATE_FREQUENCY = parseInt(speedValue);
+  UPDATE_FREQUENCY = parseInt(100 - speedValue + 1);
 });
 
 function updateExploitation() {
