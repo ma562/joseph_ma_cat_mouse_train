@@ -37,7 +37,9 @@ window.numCats = numCats;
 
 let myMap = JSON.parse(localStorage.getItem('mapConfiguration'));
 let myMouse = localStorage.getItem('mouse_avatar');
+myMouse.concat(".png");
 let myCat = localStorage.getItem('cat_avatar');
+myCat.concat(".png");
 
 // myMap = [['-', ' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
 //     ['-', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', '-'],
