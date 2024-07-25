@@ -36,6 +36,8 @@ let episodeRewards = 0;
 window.numCats = numCats;
 
 let myMap = JSON.parse(localStorage.getItem('mapConfiguration'));
+let myMouse = localStorage.getItem('mouse_avatar');
+let myCat = localStorage.getItem('cat_avatar');
 
 // myMap = [['-', ' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
 //     ['-', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', '-'],
@@ -640,7 +642,7 @@ class Player {
     this.position = position
     this.velocity = velocity
     this.image = new Image();
-    this.image.src = 'mouse3.png';
+    this.image.src = myMouse; //'mouse3.png';
     this.movement_in_progress = false;
     this.future_row = -1;
     this.future_col = -1;
@@ -671,9 +673,6 @@ class Player {
 
   }
 
-  mouse_is_not_scared() {
-    this.image.src = 'mouse3.png';
-  }
 
   update() {
     this.draw()
@@ -686,10 +685,6 @@ class Player {
     }
   }
 
-  updateMouseImage() {
-    this.image.src = "mouse3.png";
-  }
-
 }
 
 class Cat {
@@ -697,7 +692,7 @@ class Cat {
     this.position = position
     this.velocity = velocity
     this.image = new Image();
-    this.image.src = 'cat3.png';
+    this.image.src = myCat;//'cat3.png';
     this.radius = 18; // Adjust the radius of the player image
     this.go_flag = false;
     // this.speed = 1;
@@ -727,14 +722,6 @@ class Cat {
       imageRadius * 2
     );
 
-  }
-
-  updateNormalCat() {
-    this.image.src = "cat3.png";
-  }
-
-  updateCatImage() {
-    this.image.src = "cat3.png";
   }
 
   update() {
