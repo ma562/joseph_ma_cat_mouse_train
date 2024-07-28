@@ -39,6 +39,13 @@ let myMap = JSON.parse(localStorage.getItem('mapConfiguration'));
 let myMouse = localStorage.getItem('mouse_avatar');
 let myCat = localStorage.getItem('cat_avatar');
 
+// Check if any of the values are null or empty strings
+if (!myMap || !myMouse || !myCat) {
+    // Redirect to another page, e.g., "error.html"
+    window.location.href = 'https://ma562.github.io/joseph_ma_cat_mouse_config/';
+}
+
+
 
 // myMap = [['-', ' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
 //     ['-', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', '-'],
