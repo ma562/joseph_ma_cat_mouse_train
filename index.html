@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -62,7 +62,7 @@
             <button id="dijkstra">Toggle</button>
         </div>
     </header>
-    <!-- <canvas></canvas> -->
+
     <canvas id="gameCanvas" width="800" height="600"></canvas>
 
     <script src="index.js"></script>
@@ -82,6 +82,56 @@
     }
 };
 
+    </script>
+</body>
+</html>
+ -->
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat and Mouse Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header id="top-header">
+        <div id="title-container">
+            <h1>Cat and Mouse 2: Reinforcement Learning - a Project by Joseph Ma</h1>
+        </div>
+        <!-- Other header elements -->
+    </header>
+    
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+
+    <script src="index.js"></script>
+    <script>
+        function resizeCanvas() {
+            const canvas = document.getElementById('gameCanvas');
+            const aspectRatio = canvas.width / canvas.height;
+
+            // Get the screen width and height
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+
+            // Set the canvas width and height based on screen size, while maintaining aspect ratio
+            if (screenWidth / screenHeight < aspectRatio) {
+                // Screen is taller compared to the canvas aspect ratio
+                canvas.width = screenWidth * 0.9; // Use 90% of the screen width for padding
+                canvas.height = canvas.width / aspectRatio;
+            } else {
+                // Screen is wider compared to the canvas aspect ratio
+                canvas.height = screenHeight * 0.9; // Use 90% of the screen height for padding
+                canvas.width = canvas.height * aspectRatio;
+            }
+
+            // Optional: You may also need to adjust game logic here for pixel scaling if needed
+        }
+
+        // Call the resizeCanvas function when the window loads or resizes
+        window.onload = resizeCanvas;
+        window.onresize = resizeCanvas;
     </script>
 </body>
 </html>
