@@ -125,3 +125,21 @@ body {
     bottom: 20px;
     left: 20px;
 }
+
+/* Ensure the canvas is responsive */
+canvas {
+    width: 100%;         /* Make the canvas take up the full width of its container */
+    height: auto;        /* Adjust the height to maintain the aspect ratio */
+    max-width: 600px;    /* Set a max width for larger screens */
+}
+
+/* Additional scaling for smaller devices */
+@media (max-width: 600px) {
+    canvas {
+        width: 100vw;     /* On smaller devices, canvas takes the full width of the screen */
+        height: auto;     /* Adjust height accordingly */
+        transform: scale(0.8); /* Optionally scale down the canvas a bit more if needed */
+        transform-origin: top left;
+    }
+}
+
