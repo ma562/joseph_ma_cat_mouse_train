@@ -1,73 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cat and Mouse Game</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header id="top-header">
-        <div id="title-container">
-            <h1>Cat and Mouse 2: Reinforcement Learning - a Project by Joseph Ma</h1>
-        </div>
-        <div class="header-item">
-            <label for="speed-slider">Movement Speed</label>
-            <input type="range" id="speed-slider" min="1" max="100" value="85">
-            <span id="speed-value">85</span>
-        </div>
-        <div class="header-item">
-            <label>Current Epsilon</label>
-            <span id="epsilon-value">0.9</span>
-        </div>
-        <div class="header-item">
-            <label>Current Training Episode</label>
-            <span id="episode-value">0</span>
-        </div>
-        <div class="header-item">
-            <label>Current Reward</label>
-            <span id="rewards-value">0</span>
-        </div>
-        <div class="header-item">
-            <label>Cumulative Episode Rewards</label>
-            <span id="eRewards-value">0</span>
-        </div>
-        <div class="header-item">
-            <label>Exploration / Exploitation</label>
-            <div class="indicator-container">
-                <div class="circle" id="exploration-circle"></div>
-                <div class="circle" id="exploitation-circle"></div>
-            </div>
-        </div>
-        <div class="header-item">
-            <label>Prey Status</label>
-            <div class="indicator-container">
-                <div class="circle" id="escaped-circle"></div>
-                <div class="circle" id="living-circle"></div>
-                <div class="circle" id="dead-circle"></div>
-            </div>
-        </div>
-        <div class="header-item">
-            <label>Dead End Status</label>
-            <div class="indicator-container">
-                <div class="circle" id="end-status"></div>
-            </div>
-        </div>
-        <div class="header-item">
-            <label>Phase</label>
-            <button id="phase-switch">Training</button>
-        </div>
-        <div class="header-item">
-            <label>Show A* Shortest Path</label>
-            <button id="dijkstra">Toggle</button>
-        </div>
-    </header>
-    <canvas></canvas>
-
-    <script src="index.js"></script>
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -132,29 +62,24 @@
             <button id="dijkstra">Toggle</button>
         </div>
     </header>
-
+    
     <canvas id="gameCanvas"></canvas>
 
     <script src="index.js"></script>
     <script>
         window.onload = function() {
-            const canvas = document.getElementById('gameCanvas');
-            const ctx = canvas.getContext('2d');
-
-            // Mobile screen adjustment (only when the screen width is less than 600px)
+            const canvas = document.getElementById("gameCanvas");
+            const ctx = canvas.getContext("2d");
+            const originalWidth = 800; // Use the actual original width of your game
+            const originalHeight = 600; // Use the actual original height of your game
+            
+            // Only adjust for mobile
             if (window.innerWidth < 600) {
-                const screenWidth = window.innerWidth;
-                const screenHeight = window.innerHeight;
-
-                // Calculate scale factor to maintain aspect ratio for mobile
-                const scaleFactor = Math.min(screenWidth / canvas.width, screenHeight / canvas.height);
-
-                // Adjust the canvas size based on the scale factor
-                canvas.style.width = canvas.width * scaleFactor + 'px';
-                canvas.style.height = canvas.height * scaleFactor + 'px';
-
-                // Scale the rendering context so the game content scales properly
-                ctx.scale(scaleFactor, scaleFactor);
+                canvas.width = window.innerWidth - 20; // Set canvas width slightly smaller than the screen width
+                canvas.height = (originalHeight / originalWidth) * canvas.width; // Keep the aspect ratio
+            } else {
+                canvas.width = originalWidth;
+                canvas.height = originalHeight;
             }
         };
     </script>

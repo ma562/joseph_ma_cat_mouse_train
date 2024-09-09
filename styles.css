@@ -112,7 +112,6 @@ body {
     background-color: #0056b3;
 }
 
-
 #scoreboard {
     font-family: Arial, sans-serif;
     font-size: 24px;
@@ -126,37 +125,22 @@ body {
     left: 20px;
 }
 
-/* Mobile styles (screens smaller than 768px) */
-@media (max-width: 768px) {
-    #gameCanvas {
-        width: 100%;   /* Resize canvas to fit the screen width */
-        height: auto;  /* Maintain aspect ratio */
+/* Add responsive behavior */
+@media screen and (max-width: 600px) {
+    #top-header h1 {
+        font-size: 14px;
     }
-
-    #top-header {
-        flex-direction: column; /* Stack the header elements */
+    
+    .header-item label {
+        font-size: 12px;
     }
-
-    #title-container h1 {
-        font-size: 12px; /* Smaller font size for mobile */
-    }
-
-    .header-item {
-        margin: 5px 0;  /* Reduce spacing between header items */
-    }
-
+    
     #speed-slider {
-        width: 100px;  /* Smaller slider width */
+        width: 100px;
     }
-
+    
     .circle {
         width: 15px;
         height: 15px;
-    }
-
-    #phase-switch,
-    #dijkstra {
-        font-size: 12px;  /* Smaller buttons for mobile */
-        padding: 4px 8px;
     }
 }
