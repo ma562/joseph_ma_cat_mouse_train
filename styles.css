@@ -112,6 +112,7 @@ body {
     background-color: #0056b3;
 }
 
+
 #scoreboard {
     font-family: Arial, sans-serif;
     font-size: 24px;
@@ -123,24 +124,4 @@ body {
     position: fixed;
     bottom: 20px;
     left: 20px;
-}
-
-/* Add responsive behavior */
-@media screen and (max-width: 600px) {
-    #top-header h1 {
-        font-size: 14px;
-    }
-    
-    .header-item label {
-        font-size: 12px;
-    }
-    
-    #speed-slider {
-        width: 100px;
-    }
-    
-    .circle {
-        width: 15px;
-        height: 15px;
-    }
 }

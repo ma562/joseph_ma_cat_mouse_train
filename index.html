@@ -62,26 +62,8 @@
             <button id="dijkstra">Toggle</button>
         </div>
     </header>
-    
-    <canvas id="gameCanvas"></canvas>
+    <canvas></canvas>
 
     <script src="index.js"></script>
-    <script>
-        window.onload = function() {
-            const canvas = document.getElementById("gameCanvas");
-            const ctx = canvas.getContext("2d");
-            const originalWidth = 800; // Use the actual original width of your game
-            const originalHeight = 600; // Use the actual original height of your game
-            
-            // Only adjust for mobile
-            if (window.innerWidth < 600) {
-                canvas.width = window.innerWidth - 20; // Set canvas width slightly smaller than the screen width
-                canvas.height = (originalHeight / originalWidth) * canvas.width; // Keep the aspect ratio
-            } else {
-                canvas.width = originalWidth;
-                canvas.height = originalHeight;
-            }
-        };
-    </script>
 </body>
 </html>
