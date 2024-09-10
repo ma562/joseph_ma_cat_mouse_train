@@ -1,5 +1,5 @@
 //const VELOCITY = 40;
-let the_dimension = 30;
+//let the_dimension = 30;
 let UPDATE_FREQUENCY = 15;
 let gameOver = false;   //checks if the game is over
 let myCats = [];      //an array of cats
