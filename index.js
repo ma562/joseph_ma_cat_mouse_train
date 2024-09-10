@@ -1,5 +1,3 @@
-const canvas = document.querySelector('canvas')
-const c = canvas.getContext('2d')
 //const VELOCITY = 40;
 let the_dimension = 30;
 let UPDATE_FREQUENCY = 15;
@@ -1710,7 +1708,7 @@ function getSecondBestAction(Qtable, stateKey) {
 
 // Calculate offsets to center the map
 const offsetX = Math.floor((canvas.width - mapWidth) / 2);
-const offsetY = Math.floor((canvas.height - mapHeight) / 2);
+//const offsetY = Math.floor((canvas.height - mapHeight) / 2);
 const startingX = offsetX + Boundary.width + Boundary.width / 2;
 const startingY = offsetY + Boundary.width + Boundary.width / 2
 

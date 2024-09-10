@@ -64,6 +64,52 @@
     </header>
     <canvas></canvas>
 
-    <script src="index.js"></script>
+    <script>
+    const canvas = document.querySelector('canvas')
+    const c = canvas.getContext('2d')
+    let the_dimension;
+    function isMobile() {
+      return window.innerWidth <= 768; // You can adjust this width based on your needs
+    }
+
+    // Set the dimension dynamically based on the device
+    function setDimensions() {
+      if (isMobile()) {
+        // For mobile devices, adjust the dimension and shift the map lower
+        the_dimension = 25; //Math.floor(window.innerWidth / myMap[0].length) - 2; // Make the blocks smaller based on map width
+        const offsetY = Math.floor((canvas.height - mapHeight) / 2) + 50; // Shift map lower by 50px for buttons
+      } else {
+        // Default dimension for desktop
+        the_dimension = 40;
+        const offsetY = Math.floor((canvas.height - mapHeight) / 2); // No extra space for buttons
+      }
+
+      // Recalculate starting positions
+      //startingX = offsetX + Boundary.width + Boundary.width / 2;
+      //startingY = offsetY + Boundary.width + Boundary.width / 2;
+      
+      // Update the Boundary and other class dimensions as well
+      // Boundary.width = the_dimension;
+      // Boundary.height = the_dimension;
+      // CatPath.width = the_dimension;
+      // CatPath.height = the_dimension;
+      // player.radius = the_dimension / 2 - 2;  // Adjust player size for mobile
+      // player.my_velocity = the_dimension; // Adjust velocity accordingly
+    }
+
+    // Call this function initially and whenever the window resizes
+    setDimensions();
+    window.addEventListener('resize', setDimensions);
+
+    // Update canvas dimensions
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Update offset positions to shift map
+    //const offsetX = Math.floor((canvas.width - mapWidth) / 2);
+    //let offsetY = Math.floor((canvas.height - mapHeight) / 2);
+
+    </script>
+<script src="index.js"></script>
 </body>
 </html>
