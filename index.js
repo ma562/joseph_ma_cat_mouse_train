@@ -1,6 +1,7 @@
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
-const VELOCITY = 40;
+//const VELOCITY = 40;
+let the_dimension = 30;
 let UPDATE_FREQUENCY = 15;
 let gameOver = false;   //checks if the game is over
 let myCats = [];      //an array of cats
@@ -43,7 +44,7 @@ let myCat = localStorage.getItem('cat_avatar');
 if (!myMap || !myMouse || !myCat) {
     // Redirect to another page, e.g., "error.html"
     window.location.href = 'https://ma562.github.io/joseph_ma_cat_mouse_config/';
-}
+}g
 
 
 
@@ -582,12 +583,12 @@ canvas.width = window.innerWidth
 canvas.height = window.innerHeight
 
 class Boundary {
-  static width = 40
-  static height = 40
+  static width = the_dimension //40
+  static height = the_dimension //40
   constructor({ position }) {
     this.position = position
-    this.width = 40
-    this.height = 40
+    this.width = the_dimension  //40
+    this.height = the_dimension  //40
   }
 
   draw() {
@@ -614,12 +615,12 @@ class Boundary {
 }
 
 class CatPath {
-  static width = 40
-  static height = 40
+  static width = the_dimension  //40
+  static height = the_dimension //40
   constructor({ position }) {
     this.position = position
-    this.width = 40
-    this.height = 40
+    this.width = the_dimension  //40
+    this.height = the_dimension //40
   }
 
   draw() {
@@ -656,8 +657,8 @@ class Player {
     this.future_col = -1;
     this.blockage = true;
       //this used to be 18 so used the adjustment factor of 18 - this.radius when calculating fastest times
-    this.radius = 18; // Adjust the radius of the player image
-    this.my_velocity = VELOCITY;
+    this.radius = the_dimension / 2 - 2;    //18; // Adjust the radius of the player image
+    this.my_velocity = the_dimension;   //VELOCITY;
     this.speed_level = 0;
   }
 
@@ -701,7 +702,7 @@ class Cat {
     this.velocity = velocity
     this.image = new Image();
     this.image.src = myCat;//'cat3.png';
-    this.radius = 18; // Adjust the radius of the player image
+    this.radius = the_dimension / 2 - 2; //18; // Adjust the radius of the player image
     this.go_flag = false;
     // this.speed = 1;
     // this.speed_level = -1;
@@ -2167,8 +2168,8 @@ function animate() {
         direction_col = 0;
     }
 
-    new_row = player.position.y + direction_row * VELOCITY;
-    new_col = player.position.x + direction_col * VELOCITY;
+    new_row = player.position.y + direction_row * the_dimension;    //VELOCITY;
+    new_col = player.position.x + direction_col * the_dimension;    //VELOCITY;
 
     if (
     (new_row < get_continuous_X(player.future_row) && direction_row > 0) ||
@@ -2185,18 +2186,18 @@ function animate() {
 
       if(row_vector) {
         if(row_vector > 0) {
-          player.position.y += VELOCITY;
+          player.position.y += the_dimension;   //VELOCITY;
         }
         else {
-          player.position.y -= VELOCITY;
+          player.position.y -= the_dimension;   //VELOCITY;
         }
       }
       else if(col_vector) {
         if(col_vector > 0) {
-          player.position.x += VELOCITY;
+          player.position.x += the_dimension;   //VELOCITY;
         }
         else {
-          player.position.x -= VELOCITY;
+          player.position.x -= the_dimension;   //VELOCITY;
         }
       }
     }
