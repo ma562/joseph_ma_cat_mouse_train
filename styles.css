@@ -125,3 +125,44 @@ body {
     bottom: 20px;
     left: 20px;
 }
+
+@media (max-width: 768px) {
+    /* Header */
+    #title-container h1 {
+        font-size: 14px;
+    }
+
+    /* Buttons */
+    #phase-switch, #dijkstra {
+        font-size: 12px;
+        padding: 3px 8px;
+    }
+
+    /* Circles */
+    .circle {
+        width: 15px;
+        height: 15px;
+    }
+
+    /* Speed Slider */
+    #speed-slider {
+        width: 100px;
+    }
+
+    /* Scoreboard */
+    #scoreboard {
+        font-size: 18px;
+        padding: 8px;
+        bottom: 10px;
+        left: 10px;
+    }
+
+    /* General Margin/Padding Adjustments */
+    .header-item {
+        margin: 0 5px;
+    }
+
+    #top-header {
+        padding: 5px;
+    }
+}
