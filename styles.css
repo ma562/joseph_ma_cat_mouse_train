@@ -129,7 +129,9 @@ body {
 @media (max-width: 768px) {
     /* Header */
     #title-container h1 {
-        font-size: 14px;
+        font-size: 13px;  /* Decrease font size for mobile */
+        text-align: center;  /* Center the title */
+        word-wrap: break-word;  /* Allow words to wrap naturally */
     }
 
     /* Buttons */
