@@ -351,9 +351,10 @@
       if (isMobile()) {
         // For mobile devices, adjust the dimension and shift the map lower
         the_dimension = 25; //Math.floor(window.innerWidth / myMap[0].length) - 2; // Make the blocks smaller based on map width
+        alert("we are the mobile troopers");
         mapWidth = map[0].length * the_dimension;
         mapHeight = map.length * the_dimension;
-        offsetY = Math.floor((canvas.height - mapHeight) / 2) + 50; // Shift map lower by 50px for buttons
+        offsetY = Math.floor((canvas.height - mapHeight) / 2) - 50; // Shift map lower by 50px for buttons
       } else {
         // Default dimension for desktop
         the_dimension = 40;
