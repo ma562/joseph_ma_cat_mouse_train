@@ -360,7 +360,6 @@
         //const maxDimensionBasedOnWidth = Math.floor(windowWidth / map[0].length); // Fit map to width
         //const maxDimensionBasedOnHeight = Math.floor(windowHeight / map.length);   // Fit map to height
         // Set the_dimension to the smaller of the two so it fits within both dimensions
-        let myOffset;
         //the_dimension = 40 - map[0].length;
         the_dimension = 22 + (18 - map[0].length) * 2;
         //the_dimension = Math.min(maxDimensionBasedOnWidth, maxDimensionBasedOnHeight) - 2;
@@ -369,7 +368,7 @@
         mapWidth = map[0].length * the_dimension;
         mapHeight = map.length * the_dimension;
 
-        offsetY = Math.floor((canvas.height - mapHeight) / 2) - the_dimensions * 4; // Shift map lower by 50px for buttons
+        offsetY = Math.floor((canvas.height - mapHeight) / 2) - 100; // Shift map lower by 50px for buttons
       } else {
         // Default dimension for desktop
         the_dimension = 40;
