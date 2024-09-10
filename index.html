@@ -339,6 +339,8 @@
     }
 
     let the_dimension;
+    let mapWidth;
+    let mapHeight;
     function isMobile() {
       return window.innerWidth <= 768; // You can adjust this width based on your needs
     }
@@ -348,16 +350,16 @@
       if (isMobile()) {
         // For mobile devices, adjust the dimension and shift the map lower
         the_dimension = 25; //Math.floor(window.innerWidth / myMap[0].length) - 2; // Make the blocks smaller based on map width
+        mapWidth = map[0].length * the_dimension;
+        mapHeight = map.length * the_dimension;
         const offsetY = Math.floor((canvas.height - mapHeight) / 2) + 50; // Shift map lower by 50px for buttons
       } else {
         // Default dimension for desktop
         the_dimension = 40;
+        mapWidth = map[0].length * the_dimension;
+        mapHeight = map.length * the_dimension;
         const offsetY = Math.floor((canvas.height - mapHeight) / 2); // No extra space for buttons
       }
-
-      const mapWidth = map[0].length * the_dimension; //Boundary.width;    //number of columns
-      const mapHeight = map.length * the_dimension; //Boundary.height;     //number of rows
-
       // Recalculate starting positions
       //startingX = offsetX + Boundary.width + Boundary.width / 2;
       //startingY = offsetY + Boundary.width + Boundary.width / 2;
