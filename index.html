@@ -357,10 +357,13 @@
         // the_dimension = 25; 
         // mapWidth = map[0].length * the_dimension;
         // mapHeight = map.length * the_dimension;
-        const maxDimensionBasedOnWidth = Math.floor(windowWidth / map[0].length); // Fit map to width
-        const maxDimensionBasedOnHeight = Math.floor(windowHeight / map.length);   // Fit map to height
+        //const maxDimensionBasedOnWidth = Math.floor(windowWidth / map[0].length); // Fit map to width
+        //const maxDimensionBasedOnHeight = Math.floor(windowHeight / map.length);   // Fit map to height
         // Set the_dimension to the smaller of the two so it fits within both dimensions
-        the_dimension = Math.min(maxDimensionBasedOnWidth, maxDimensionBasedOnHeight) - 2;
+        let myOffset;
+        //the_dimension = 40 - map[0].length;
+        the_dimension = 22 + (18 - map[0].length) * 2;
+        //the_dimension = Math.min(maxDimensionBasedOnWidth, maxDimensionBasedOnHeight) - 2;
         
         // Calculate map dimensions based on the_dimension
         mapWidth = map[0].length * the_dimension;
