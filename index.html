@@ -291,6 +291,22 @@
 
     let map;
     // Usage:
+
+    function getMapAndMarkUsed(mapKey) {
+      const map = mapCollection[mapKey];
+      let usedMapKeys = JSON.parse(localStorage.getItem('usedMapKeys')) || [];
+      usedMapKeys.push(mapKey);
+
+      // If all maps have been used once, reset the usedMapKeys to start reusing maps
+      if (usedMapKeys.length === Object.keys(mapCollection).length) {
+        usedMapKeys = [];
+        localStorage.removeItem('usedMapKeys'); // Clear the storage for reuse
+      }
+
+      localStorage.setItem('usedMapKeys', JSON.stringify(usedMapKeys));
+      return map;
+    }
+    
     function getRandomUnusedMapKey() {
       const mapKeys = Object.keys(mapCollection);
       const usedMapKeys = JSON.parse(localStorage.getItem('usedMapKeys')) || [];
@@ -307,7 +323,7 @@
       const randomIndex = Math.floor(Math.random() * availableMapKeys.length);
       return availableMapKeys[randomIndex];
     }
-    
+
     const randomMapKey = getRandomUnusedMapKey();
 
     if (randomMapKey) {

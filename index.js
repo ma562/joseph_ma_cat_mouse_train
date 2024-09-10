@@ -211,20 +211,6 @@ function get_continuous_Y(position_y) {
 
 
 // Function to get the map for the given key and mark it as used
-function getMapAndMarkUsed(mapKey) {
-  const map = mapCollection[mapKey];
-  let usedMapKeys = JSON.parse(localStorage.getItem('usedMapKeys')) || [];
-  usedMapKeys.push(mapKey);
-
-  // If all maps have been used once, reset the usedMapKeys to start reusing maps
-  if (usedMapKeys.length === Object.keys(mapCollection).length) {
-    usedMapKeys = [];
-    localStorage.removeItem('usedMapKeys'); // Clear the storage for reuse
-  }
-
-  localStorage.setItem('usedMapKeys', JSON.stringify(usedMapKeys));
-  return map;
-}
 
 
 class PriorityQueue {
