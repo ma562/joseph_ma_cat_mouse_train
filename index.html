@@ -306,7 +306,7 @@
       localStorage.setItem('usedMapKeys', JSON.stringify(usedMapKeys));
       return map;
     }
-    
+
     function getRandomUnusedMapKey() {
       const mapKeys = Object.keys(mapCollection);
       const usedMapKeys = JSON.parse(localStorage.getItem('usedMapKeys')) || [];
@@ -338,9 +338,6 @@
       }
     }
 
-    const mapWidth = map[0].length * Boundary.width;    //number of columns
-    const mapHeight = map.length * Boundary.height;     //number of rows
-
     let the_dimension;
     function isMobile() {
       return window.innerWidth <= 768; // You can adjust this width based on your needs
@@ -357,6 +354,9 @@
         the_dimension = 40;
         const offsetY = Math.floor((canvas.height - mapHeight) / 2); // No extra space for buttons
       }
+
+      const mapWidth = map[0].length * the_dimension; //Boundary.width;    //number of columns
+      const mapHeight = map.length * the_dimension; //Boundary.height;     //number of rows
 
       // Recalculate starting positions
       //startingX = offsetX + Boundary.width + Boundary.width / 2;
