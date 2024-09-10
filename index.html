@@ -70,7 +70,7 @@
 
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    
+
     const c = canvas.getContext('2d')
 
     let myMap = JSON.parse(localStorage.getItem('mapConfiguration'));
@@ -354,11 +354,19 @@
     function setDimensions() {
       if (isMobile()) {
         // For mobile devices, adjust the dimension and shift the map lower
-        the_dimension = 25; //Math.floor(window.innerWidth / myMap[0].length) - 2; // Make the blocks smaller based on map width
-        alert("we are the mobile troopers");
+        // the_dimension = 25; 
+        // mapWidth = map[0].length * the_dimension;
+        // mapHeight = map.length * the_dimension;
+        const maxDimensionBasedOnWidth = Math.floor(windowWidth / map[0].length); // Fit map to width
+        const maxDimensionBasedOnHeight = Math.floor(windowHeight / map.length);   // Fit map to height
+        // Set the_dimension to the smaller of the two so it fits within both dimensions
+        the_dimension = Math.min(maxDimensionBasedOnWidth, maxDimensionBasedOnHeight) - 2;
+        
+        // Calculate map dimensions based on the_dimension
         mapWidth = map[0].length * the_dimension;
         mapHeight = map.length * the_dimension;
-        offsetY = Math.floor((canvas.height - mapHeight) / 2) - 50; // Shift map lower by 50px for buttons
+
+        offsetY = Math.floor((canvas.height - mapHeight) / 2) - 75; // Shift map lower by 50px for buttons
       } else {
         // Default dimension for desktop
         the_dimension = 40;
