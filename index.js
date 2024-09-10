@@ -34,16 +34,6 @@ let episodeRewards = 0;
 // Declare numCats as a global variable
 window.numCats = numCats;
 
-let myMap = JSON.parse(localStorage.getItem('mapConfiguration'));
-let myMouse = localStorage.getItem('mouse_avatar');
-let myCat = localStorage.getItem('cat_avatar');
-
-// Check if any of the values are null or empty strings
-if (!myMap || !myMouse || !myCat) {
-    // Redirect to another page, e.g., "error.html"
-    window.location.href = 'https://ma562.github.io/joseph_ma_cat_mouse_config/';
-}
-
 
 // myMap = [['-', ' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
 //     ['-', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', '-'],
@@ -117,215 +107,7 @@ if (!myMap || !myMouse || !myCat) {
 // ]
 
 
-console.log(myMap);
 
-//DEAD END CODE--------------------------------------------------
-function countPaths(grid, startRow, startCol) {
-    let visited = Array.from({ length: grid.length }, () => Array(grid[0].length).fill(false));
-    let count = 0;
-
-    function dfs(row, col) {
-        if (row < 0 || row >= grid.length || col < 0 || col >= grid[0].length) return;
-        if (grid[row][col] === '-' || visited[row][col]) return;
-
-        visited[row][col] = true;
-        count++;
-
-        dfs(row + 1, col);
-        dfs(row - 1, col);
-        dfs(row, col + 1);
-        dfs(row, col - 1);
-    }
-
-    dfs(startRow, startCol);
-    return count;
-}
-
-function isConnected(grid, startRow, startCol, wallRow, wallCol) {
-    if (grid[wallRow][wallCol] === '-') return true;
-
-    let tempGrid = grid.map(row => row.slice());
-    tempGrid[wallRow][wallCol] = '-';
-
-    const originalPathsCount = countPaths(grid, startRow, startCol);
-    const newPathsCount = countPaths(tempGrid, startRow, startCol);
-
-    // Decrement the original paths count by 1 if we placed a wall on a path
-    if (grid[wallRow][wallCol] === ' ') {
-        return originalPathsCount - 1 === newPathsCount;
-    }
-
-    return originalPathsCount === newPathsCount;
-}
-
-function checkDisconnectivity(grid) {
-    const rows = grid.length;
-    const cols = grid[0].length;
-    const result = Array.from({ length: rows }, () => Array(cols).fill(0));
-
-    const directions = [
-        [1, 0],  // down
-        [-1, 0], // up
-        [0, 1],  // right
-        [0, -1]  // left
-    ];
-
-    for (let row = 0; row < rows; row++) {
-        for (let col = 0; col < cols; col++) {
-            if (grid[row][col] === '-') {
-                result[row][col] = -1;
-                continue;
-            }
-
-            let isDisconnected = false;
-
-            for (const [dr, dc] of directions) {
-                const wallRow = row + dr;
-                const wallCol = col + dc;
-
-                if (
-                    wallRow >= 0 && wallRow < rows &&
-                    wallCol >= 0 && wallCol < cols &&
-                    grid[wallRow][wallCol] === ' '
-                ) {
-                    if (!isConnected(grid, row, col, wallRow, wallCol)) {
-                        isDisconnected = true;
-                        break;
-                    }
-                }
-            }
-
-            result[row][col] = isDisconnected ? 1 : 0;
-        }
-    }
-
-    return result;
-}
-
-function isDisconnected(grid, startRow, startCol, wallRow, wallCol) {           //returns 1 if we are dead end, else 0
-    // Create a copy of the grid
-    let tempGrid = grid.map(row => row.slice());
-    
-    // Place the imaginary wall
-    tempGrid[wallRow][wallCol] = -1;
-
-    // Define directions for movement (down, up, right, left)
-    const directions = [
-        [1, 0],  // down
-        [-1, 0], // up
-        [0, 1],  // right
-        [0, -1]  // left
-    ];
-
-    function dfs(row, col) {
-        if (row < 0 || row >= tempGrid.length || col < 0 || col >= tempGrid[0].length) return false;
-        if (tempGrid[row][col] === -1 || tempGrid[row][col] === -2) return false;
-        
-        // If we found a 0 cell, return true
-        if (tempGrid[row][col] === 0) {
-            return true;
-        }
-
-        // Mark the cell as visited by changing its value to something other than 0 or -1
-        tempGrid[row][col] = -2;
-
-        for (const [dr, dc] of directions) {
-            const newRow = row + dr;
-            const newCol = col + dc;
-            if (dfs(newRow, newCol)) return true;
-        }
-
-        return false;
-    }
-
-    // Check if the coordinate of interest can reach any 0s
-    return dfs(startRow, startCol) ? 0 : 1;
-}
-
-function createDisconnectivityTable(grid) {
-    const rows = grid.length;
-    const cols = grid[0].length;
-    const result = [];
-
-    const directions = {
-        up: [-1, 0],
-        down: [1, 0],
-        left: [0, -1],
-        right: [0, 1]
-    };
-
-    for (let row = 0; row < rows; row++) {
-        for (let col = 0; col < cols; col++) {
-            if (grid[row][col] === 1) {
-                let rowResult = {
-                    coordinate: [row, col],
-                    up: 0,
-                    down: 0,
-                    left: 0,
-                    right: 0
-                };
-
-                for (const [direction, [dr, dc]] of Object.entries(directions)) {
-                    const wallRow = row + dr;
-                    const wallCol = col + dc;
-
-                    if (wallRow >= 0 && wallRow < rows && wallCol >= 0 && wallCol < cols && grid[row][col] !== -1) {
-                        rowResult[direction] = isDisconnected(grid, row, col, wallRow, wallCol);
-                    }
-                }
-
-                result.push(rowResult);
-            }
-        }
-    }
-
-    return result;
-}
-
-function getDisconnectivityValue(disconnectivityTable, row, column, directionOfInterest) {
-    // Define direction mapping
-    const directionMap = ['up', 'right', 'left', 'down'];
-
-    //change this to account for the disconnectivity table not cutting off border walls
-    row += 1;
-    column += 1;
-    
-    // Check if the direction of interest is valid
-    if (directionOfInterest < 0 || directionOfInterest > 3) {
-        throw new Error('Invalid direction of interest');
-    }
-
-    // Get the string representation of the direction
-    const direction = directionMap[directionOfInterest];
-
-    // Iterate through the disconnectivity table to find the coordinates of interest
-    for (let i = 0; i < disconnectivityTable.length; i++) {
-        const rowEntry = disconnectivityTable[i];
-        if (rowEntry.coordinate[0] === row && rowEntry.coordinate[1] === column) {
-            // Return the value for the direction of interest
-            return rowEntry[direction];
-        }
-    }
-
-    // If the coordinates are not found in the table, return 0
-    return 0;
-}
-
-let deadMap = checkDisconnectivity(myMap);
-deadMap[1][1] = 0;
-let disconnect = createDisconnectivityTable(deadMap);
-
-console.log("dead map");
-console.log(deadMap);
-console.log("disconnect");
-console.log(disconnect);
-
-myMap[0][1] = ' ';
-
-const mapCollection = {
-  map1: myMap
-
-};
 //-------------------------------------------------------------
 
 //------------------------------------------------UPDATED CODE
@@ -426,22 +208,7 @@ function get_continuous_Y(position_y) {
 }
 
 // Function to get a random map key that hasn't been used yet
-function getRandomUnusedMapKey() {
-  const mapKeys = Object.keys(mapCollection);
-  const usedMapKeys = JSON.parse(localStorage.getItem('usedMapKeys')) || [];
 
-  // Filter out the used map keys
-  const availableMapKeys = mapKeys.filter(key => !usedMapKeys.includes(key));
-
-  if (availableMapKeys.length === 0) {
-    // If all maps have been used once, reset the usedMapKeys to start reusing maps
-    localStorage.removeItem('usedMapKeys');
-    return getRandomUnusedMapKey();
-  }
-
-  const randomIndex = Math.floor(Math.random() * availableMapKeys.length);
-  return availableMapKeys[randomIndex];
-}
 
 // Function to get the map for the given key and mark it as used
 function getMapAndMarkUsed(mapKey) {
@@ -459,21 +226,6 @@ function getMapAndMarkUsed(mapKey) {
   return map;
 }
 
-let map;
-// Usage:
-const randomMapKey = getRandomUnusedMapKey();
-
-if (randomMapKey) {
-  map = getMapAndMarkUsed(randomMapKey);
-} else {
-  // Handle the case where all maps have been used once and start reusing maps
-  const reusedMapKey = getRandomUnusedMapKey();
-  if (reusedMapKey) {
-    map = getMapAndMarkUsed(reusedMapKey);
-  } else {
-    console.log('All maps have been used once. Starting to reuse maps.');
-  }
-}
 
 class PriorityQueue {
   constructor() {
@@ -576,8 +328,8 @@ class PriorityQueue {
 
 const pq = new PriorityQueue();
 
-canvas.width = window.innerWidth
-canvas.height = window.innerHeight
+// canvas.width = window.innerWidth
+// canvas.height = window.innerHeight
 
 class Boundary {
   static width = the_dimension //40
@@ -739,8 +491,6 @@ class Cat {
 
 const boundaries = []
 
-const mapWidth = map[0].length * Boundary.width;    //number of columns
-const mapHeight = map.length * Boundary.height;     //number of rows
 
 //DIJKSTRA'S ALGORITHM
 // Define the Node object
