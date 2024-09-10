@@ -67,6 +67,10 @@
     <script>
 
     const canvas = document.querySelector('canvas')
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
     const c = canvas.getContext('2d')
 
     let myMap = JSON.parse(localStorage.getItem('mapConfiguration'));
@@ -380,8 +384,6 @@
     window.addEventListener('resize', setDimensions);
 
     // Update canvas dimensions
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
 
     // Update offset positions to shift map
     //const offsetX = Math.floor((canvas.width - mapWidth) / 2);
