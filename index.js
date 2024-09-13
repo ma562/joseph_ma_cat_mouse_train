@@ -1367,7 +1367,7 @@ function calculateDecayRate(n) {
 }
 
 // Example usage:
-const n = max_distance * max_distance + 1.5 * pathCount * max_distance / 2;   //pathCount * pathCount + pathCount * max_distance / 3;  // Example value for the power
+const n = 0.75 * max_distance * max_distance + 1.5 * pathCount * max_distance / 2;   //pathCount * pathCount + pathCount * max_distance / 3;  // Example value for the power
 const decayRate = calculateDecayRate(n);
 console.log(`The decay rate x for power n=${n} is: ${decayRate}`);
 
