@@ -2097,11 +2097,15 @@ function animate() {
         reward = max_distance / 2;  //KEEP_DISTANCE;
         //the mouse was actually close enough to the exit to escape but did not take the opportunity to do so
         //that is if the old cat was not coming from the old direction of the exit
-        if(old_direction !== old_exit_direction) {
+        if(old_direction !== old_exit_direction || (new_exit_distance) < cat_to_exit) {
           reward = -(max_distance - myCats[0].rows.length);
         }
       }
-      else if((old_cat_distance > new_cat_distance) && (new_exit_distance < old_exit_distance) && ((new_exit_distance) < cat_to_exit)) {
+      else if((new_exit_distance < old_exit_distance) && ((new_exit_distance) < cat_to_exit)) {
+        //new update
+        //if we are closer to exit than the cat and we get closer to exit - reward regardless
+
+        //else if((old_cat_distance > new_cat_distance) && (new_exit_distance < old_exit_distance) && ((new_exit_distance) < cat_to_exit))
         //the mouse gets closer to cat
         //the exit got closer to mouse
         //the exit is closer to mouse than cat is to mouse
