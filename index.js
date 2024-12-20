@@ -2,7 +2,7 @@
 //let the_dimension = 30;
 let UPDATE_FREQUENCY = 15;
 let gameOver = false;   //checks if the game is over
-let myCats = [];      //an array of cats
+let cat;    // the cat object
 let direction_col;
 let direction_row;
 let new_row;
@@ -23,92 +23,12 @@ let old_dead_end = false;
 let old_old_dead_end = false;
 
 // Determine the value of numCats based on the conditions
-let numCats = 1;
 let check_edge_case = false;    //there is an edge case in which the cat/mouse cross paths and go through each other. only check when they are adjacent.
 let restart = false;    //mouse got caught
 let restart2 = false;   //mouse escaped
 let max_distance = 0;         //MAX POSSIBLE DISTANCE BETWEEN THE CAT AND MOUSE
 let success = 0;
 let episodeRewards = 0;
-
-// Declare numCats as a global variable
-window.numCats = numCats;
-
-
-// myMap = [['-', ' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', '-'],
-//     ['-', '-', '-', '-', '-', ' ', ' ', ' ', ' ', '-', ' ', '-'],
-//     ['-', ' ', '-', ' ', '-', ' ', '-', '-', '-', '-', ' ', '-'],
-//     ['-', ' ', '-', ' ', '-', ' ', ' ', ' ', '-', ' ', ' ', '-'],
-//     ['-', ' ', '-', ' ', '-', ' ', '-', ' ', ' ', ' ', '-', '-'],
-//     ['-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', ' ', ' ', '-'],
-//     ['-', ' ', '-', ' ', ' ', ' ', ' ', ' ', '-', '-', ' ', '-'],
-//     ['-', ' ', '-', ' ', '-', '-', '-', ' ', '-', ' ', ' ', '-'],
-//     ['-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', ' ', '-', '-'],
-//     ['-', ' ', ' ', ' ', '-', ' ', ' ', ' ', '-', ' ', ' ', '-'],
-//     ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
-// ]
-// myMap = [['-', ' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
-// ]
-
-// myMap = [['-', ' ', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', '-', '-', ' ', ' ', '-', '-', '-', '-', ' ', ' ', ' ', '-', ' ', '-', ' ', '-'],
-//     ['-', ' ', '-', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', '-', ' ', '-'],
-//     ['-', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', '-', ' ', '-'],
-//     ['-', ' ', '-', '-', '-', ' ', '-', '-', '-', '-', '-', '-', ' ', '-', ' ', '-', ' ', '-'],
-//     ['-', ' ', ' ', ' ', '-', ' ', '-', ' ', ' ', '-', ' ', ' ', ' ', '-', ' ', '-', ' ', '-'],
-//     ['-', '-', '-', '-', '-', ' ', '-', ' ', ' ', '-', '-', '-', '-', '-', ' ', '-', ' ', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', '-', ' ', '-'],
-//     ['-', '-', '-', '-', '-', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', '-', ' ', '-', ' ', '-', '-', '-', '-', ' ', '-', '-', '-', '-', '-'],
-//     ['-', ' ', '-', '-', '-', ' ', '-', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', ' ', ' ', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', '-', '-', '-', ' ', '-', '-', '-'],
-//     ['-', ' ', '-', '-', '-', ' ', '-', '-', '-', ' ', ' ', ' ', ' ', '-', ' ', '-', ' ', '-'],
-//     ['-', ' ', ' ', ' ', '-', ' ', '-', ' ', ' ', ' ', ' ', ' ', ' ', '-', ' ', ' ', ' ', '-'],
-//     ['-', ' ', '-', ' ', '-', '-', '-', '-', '-', '-', '-', ' ', ' ', '-', '-', '-', '-', '-'],
-//     ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-//     ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
-// ]
-
-// myMap = [['-', ' ', '-', '-', '-', '-', '-'],
-//         ['-', ' ', ' ', ' ', ' ', ' ', '-'],
-//         ['-', ' ', ' ', ' ', ' ', ' ', '-'],
-//         ['-', ' ', ' ', ' ', ' ', ' ', '-'],
-//         ['-', ' ', ' ', ' ', ' ', ' ', '-'],
-//         ['-', ' ', ' ', ' ', ' ', ' ', '-'],
-//         ['-', '-', '-', '-', '-', '-', '-'],
-    // ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-    // ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-    // ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-    // ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-    // ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-    // ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-    // ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-    // ['-', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '-'],
-    // ['-', '-', '-', '-', '-', '-', '-', '-', '-', '-']
-// ]
-
-
-
-//-------------------------------------------------------------
 
 //------------------------------------------------UPDATED CODE
 // Event listeners for the UI elements
@@ -142,18 +62,12 @@ document.getElementById('phase-switch').addEventListener('click', () => {
     updateExploitation();
     console.log("updated");
   }
-  
 
-  // Toggle between training and performance phases
-  // Example: handleTrainingPhaseSwitch(trainingPhase);
 });
 
 document.getElementById('dijkstra').addEventListener('click', () => {
-  // trainingPhase = !trainingPhase;
-  //document.getElementById('phase-switch').textContent = TRAINING ? 'Training' : 'Performance';
+
   SHOW_DIJKSTRA = !SHOW_DIJKSTRA; //toggle
-  // Toggle between training and performance phases
-  // Example: handleTrainingPhaseSwitch(trainingPhase);
 });
 
 function updatePreyStatus() {
@@ -188,7 +102,6 @@ function updateDeadEnd() {
   }
 }
 
-
 //------------------------------------------------UPDATED CODE
 
 function get_discrete_X(position_x) {
@@ -206,12 +119,6 @@ function get_continuous_X(position_x) {
 function get_continuous_Y(position_y) {
   return position_y * Boundary.height + startingX;
 }
-
-// Function to get a random map key that hasn't been used yet
-
-
-// Function to get the map for the given key and mark it as used
-
 
 class PriorityQueue {
   constructor() {
@@ -1236,20 +1143,18 @@ const startingX = offsetX + Boundary.width + Boundary.width / 2;
 const startingY = offsetY + Boundary.width + Boundary.width / 2
 
 
-//creation of the cats
-for(let i = 0; i < numCats; i++) {
-  const cat = new Cat({
+//creation of the cat
+cat = new Cat({
   position: {
     x: startingX,
-    y: startingY
+    y: startingY,
   },
   velocity: {
     x: 0,
-    y: 0
-  }
-})
-  myCats.push(cat);
-}
+    y: 0,
+  },
+});
+
 
 const player = new Player({
   position: {
@@ -1307,15 +1212,8 @@ function checkCollision(playerX, playerY, catX, catY) {
 }
 
 function checkCollisionAndRestart() {
-  for(let i = 0; i < myCats.length; i++) {
-    // if (!gameOver && checkCollision(player.position.x, player.position.y, myCats[i].position.x, myCats[i].position.y)) {
-    //   gameOver = true;
-    //   console.log("BIG BAD CAUGHT");
-    //   return true;
-    // }
-    if(checkCollision(player.position.x, player.position.y, myCats[i].position.x, myCats[i].position.y)) {
-      return true;
-    }
+  if(checkCollision(player.position.x, player.position.y, cat.position.x, cat.position.y)) {
+    return true;
   }
 }
 
@@ -1371,7 +1269,7 @@ function animate() {
 
   requestAnimationFrame(animate)
   c.clearRect(0, 0, canvas.width, canvas.height)
-  myCats[0].draw();
+  cat.draw();
   animate_iteration++;
 
   //0 for W (UP), 1 FOR A (LEFT), 2 for S (RIGHT), 3 for D (DOWN)
@@ -1409,22 +1307,22 @@ function animate() {
       //checking for illegal moves.
       old_mouse_row = get_discrete_Y(player.position.y);
       old_mouse_col = get_discrete_X(player.position.x);
-      old_cat_row = get_discrete_Y(myCats[0].position.y);
-      old_cat_col = get_discrete_X(myCats[0].position.x);
+      old_cat_row = get_discrete_Y(cat.position.y);
+      old_cat_col = get_discrete_X(cat.position.x);
     }
 
-    if(myCats[0].rows.length === 0) {
+    if(cat.rows.length === 0) {
       //FIRST ITERATION SO WE HAVE TO CREATE THE INITIAL OBSERVATION
       my_matrix = read_write_values(map)
 
-      // fastestTimes(my_matrix, get_discrete_Y(myCats[0].position.y), get_discrete_X(myCats[0].position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), myCats[0].rows, myCats[0].col)
-      // console.log(myCats[0].rows)
-      // console.log(myCats[0].col)
-      a_fastestTimes(my_matrix, get_discrete_Y(myCats[0].position.y), get_discrete_X(myCats[0].position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), myCats[0].rows, myCats[0].col)
-      // console.log(myCats[0].rows)
-      // console.log(myCats[0].col)
-      if(myCats[0].rows.length > max_distance) {
-        max_distance = myCats[0].rows.length;
+      // fastestTimes(my_matrix, get_discrete_Y(cat.position.y), get_discrete_X(cat.position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), cat.rows, cat.col)
+      // console.log(cat.rows)
+      // console.log(cat.col)
+      a_fastestTimes(my_matrix, get_discrete_Y(cat.position.y), get_discrete_X(cat.position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), cat.rows, cat.col)
+      // console.log(cat.rows)
+      // console.log(cat.col)
+      if(cat.rows.length > max_distance) {
+        max_distance = cat.rows.length;
         //UPDATE REWARD PARAMETER
         console.log("WE HAD TO UPDATE THE REWARD PARAMETER TFFFFFFF");
       }
@@ -1432,18 +1330,18 @@ function animate() {
       catPaths.push(
         new CatPath({
           position: {
-            x: offsetX + Boundary.width * (get_discrete_X(myCats[0].position.x) + 1),
-            y: offsetY + Boundary.height * (get_discrete_Y(myCats[0].position.y) + 1)
+            x: offsetX + Boundary.width * (get_discrete_X(cat.position.x) + 1),
+            y: offsetY + Boundary.height * (get_discrete_Y(cat.position.y) + 1)
           }
         })
       );
-      for (let i = 0; i < myCats[0].rows.length; i++) {
-        if (myCats[0].rows[i] !== -1 && myCats[0].col[i] !== -1) {
+      for (let i = 0; i < cat.rows.length; i++) {
+        if (cat.rows[i] !== -1 && cat.col[i] !== -1) {
           catPaths.push(
             new CatPath({
               position: {
-                x: offsetX + Boundary.width * (myCats[0].col[i] + 1),
-                y: offsetY + Boundary.height * (myCats[0].rows[i] + 1)
+                x: offsetX + Boundary.width * (cat.col[i] + 1),
+                y: offsetY + Boundary.height * (cat.rows[i] + 1)
               }
             })
           );
@@ -1452,25 +1350,25 @@ function animate() {
     }
 
 
-    // if(myCats[0].rows.length !== 0) {
+    // if(cat.rows.length !== 0) {
       //determine the direction in which the cat is coming from.
-    if(myCats[0].rows.length === 2) {
-      row_incoming = get_discrete_Y(myCats[0].position.y);
-      col_incoming = get_discrete_X(myCats[0].position.x);
+    if(cat.rows.length === 2) {
+      row_incoming = get_discrete_Y(cat.position.y);
+      col_incoming = get_discrete_X(cat.position.x);
     }
     else {
-      row_incoming = myCats[0].rows[myCats[0].rows.length - 3];
-      col_incoming = myCats[0].col[myCats[0].col.length - 3];
+      row_incoming = cat.rows[cat.rows.length - 3];
+      col_incoming = cat.col[cat.col.length - 3];
     }
     let mouse_row = get_discrete_Y(player.position.y);
     let mouse_col = get_discrete_X(player.position.x);
     direction = getCatDirection(mouse_row, mouse_col, row_incoming, col_incoming);
     //getStateIndex(row, col, catDirection, mouseCatDistance, exitDirection)
 
-    state_Index = getStateIndex(mouse_row, mouse_col, direction, myCats[0].rows.length)
+    state_Index = getStateIndex(mouse_row, mouse_col, direction, cat.rows.length)
     initializeState(Qtable, state_Index); 
 
-    old_cat_distance = myCats[0].rows.length;
+    old_cat_distance = cat.rows.length;
     old_exit_distance = newPathMatrix[mouse_row][mouse_col];
 
     
@@ -1731,34 +1629,31 @@ function animate() {
     }
   }
   player.draw();
-
-  for(let i = 0; i < myCats.length; i++) {
-    myCats[i].draw();
-  }
+  cat.draw();
 
   if(animate_iteration % UPDATE_FREQUENCY === 0) {
     
-    for(let i = 0; i < myCats.length; i++) {
-      if((!restart2 && myCats[i].rows.length !== 1) && (myCats[i].col.length !== 1)) {
+    
+      if((!restart2 && cat.rows.length !== 1) && (cat.col.length !== 1)) {
 
-      cat_speed = myCats[i].speed;
+      cat_speed = cat.speed;
 
-      direction_row = get_continuous_X(myCats[i].rows[0]) - myCats[i].position.y;
-      direction_col = get_continuous_Y(myCats[i].col[0]) - myCats[i].position.x;
+      direction_row = get_continuous_X(cat.rows[0]) - cat.position.y;
+      direction_col = get_continuous_Y(cat.col[0]) - cat.position.x;
 
-      new_row = myCats[i].position.y + direction_row  //cat_speed;
-      new_col = myCats[i].position.x + direction_col //cat_speed;
+      new_row = cat.position.y + direction_row  //cat_speed;
+      new_col = cat.position.x + direction_col //cat_speed;
 
-      myCats[i].position.y = new_row;
-      myCats[i].position.x = new_col;
+      cat.position.y = new_row;
+      cat.position.x = new_col;
 
     }
       my_matrix = read_write_values(map)
 
-      a_fastestTimes(my_matrix, get_discrete_Y(myCats[0].position.y), get_discrete_X(myCats[0].position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), myCats[0].rows, myCats[0].col)
+      a_fastestTimes(my_matrix, get_discrete_Y(cat.position.y), get_discrete_X(cat.position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x), cat.rows, cat.col)
 
-      if(myCats[0].rows.length > max_distance) {
-        max_distance = myCats[0].rows.length;
+      if(cat.rows.length > max_distance) {
+        max_distance = cat.rows.length;
         //UPDATE REWARD PARAMETER
         console.log("WE HAD TO UPDATE THE REWARD PARAMETER TFFFFFFF");
       }
@@ -1766,25 +1661,24 @@ function animate() {
       catPaths.push(
         new CatPath({
           position: {
-            x: offsetX + Boundary.width * (get_discrete_X(myCats[0].position.x) + 1),
-            y: offsetY + Boundary.height * (get_discrete_Y(myCats[0].position.y) + 1)
+            x: offsetX + Boundary.width * (get_discrete_X(cat.position.x) + 1),
+            y: offsetY + Boundary.height * (get_discrete_Y(cat.position.y) + 1)
           }
         })
       );
-      for (let j = 0; j < myCats[0].rows.length; j++) {
-        if (myCats[0].rows[j] !== -1 && myCats[0].col[j] !== -1) {
+      for (let j = 0; j < cat.rows.length; j++) {
+        if (cat.rows[j] !== -1 && cat.col[j] !== -1) {
           catPaths.push(
             new CatPath({
               position: {
-                x: offsetX + Boundary.width * (myCats[0].col[j] + 1),
-                y: offsetY + Boundary.height * (myCats[0].rows[j] + 1)
+                x: offsetX + Boundary.width * (cat.col[j] + 1),
+                y: offsetY + Boundary.height * (cat.rows[j] + 1)
               }
             })
           );
         }
       }
     
-    }
 
     //CHECK IF PLAYER AND CAT ARE RIGHT NEXT TO EACH OTHER;
     if(checkCollisionAndRestart()) {
@@ -1794,7 +1688,7 @@ function animate() {
     }
 
     if(check_edge_case) {
-      if((get_discrete_Y(myCats[0].position.y) == old_mouse_row) && (get_discrete_X(myCats[0].position.x) == old_mouse_col) &&
+      if((get_discrete_Y(cat.position.y) == old_mouse_row) && (get_discrete_X(cat.position.x) == old_mouse_col) &&
         (get_discrete_Y(player.position.y) == old_cat_row) && (get_discrete_X(player.position.x) == old_cat_col)) {
           restart = true;
           preyStatus = "dead";
@@ -1803,7 +1697,7 @@ function animate() {
     }
 
 
-    if(areAdjacent(get_discrete_Y(myCats[0].position.y), get_discrete_X(myCats[0].position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x))) {
+    if(areAdjacent(get_discrete_Y(cat.position.y), get_discrete_X(cat.position.x), get_discrete_Y(player.position.y), get_discrete_X(player.position.x))) {
       check_edge_case = true;   //be on alert
     }
 
@@ -1813,22 +1707,22 @@ function animate() {
     //once we have a feedback of our old distance from cat
     
 
-    new_cat_distance = myCats[0].rows.length;
+    new_cat_distance = cat.rows.length;
     new_exit_distance = newPathMatrix[get_discrete_Y(player.position.y)][get_discrete_X(player.position.x)];
-    cat_to_exit = newPathMatrix[get_discrete_Y(myCats[0].position.y)][get_discrete_X(myCats[0].position.x)];
+    cat_to_exit = newPathMatrix[get_discrete_Y(cat.position.y)][get_discrete_X(cat.position.x)];
 
-    let row_incoming = myCats[0].rows[myCats[0].rows.length - 3];
-    let col_incoming = myCats[0].col[myCats[0].col.length - 3];
+    let row_incoming = cat.rows[cat.rows.length - 3];
+    let col_incoming = cat.col[cat.col.length - 3];
     let mouse_row = get_discrete_Y(player.position.y);
     let mouse_col = get_discrete_X(player.position.x);
 
-    if(myCats[0].rows.length <= 2) {
-      row_incoming = get_discrete_Y(myCats[0].position.y);
-      col_incoming = get_discrete_X(myCats[0].position.x);
+    if(cat.rows.length <= 2) {
+      row_incoming = get_discrete_Y(cat.position.y);
+      col_incoming = get_discrete_X(cat.position.x);
     }
     else {
-      row_incoming = myCats[0].rows[myCats[0].rows.length - 3];
-      col_incoming = myCats[0].col[myCats[0].col.length - 3];
+      row_incoming = cat.rows[cat.rows.length - 3];
+      col_incoming = cat.col[cat.col.length - 3];
     }
 
 
@@ -1854,7 +1748,7 @@ function animate() {
       }
       else if((old_cat_distance - 1 === new_cat_distance) && (new_exit_distance < old_exit_distance) && ((new_exit_distance) < cat_to_exit)) {
         //not putting full effort into escaping.
-        reward = -(max_distance - myCats[0].rows.length);
+        reward = -(max_distance - cat.rows.length);
       }
       else if(old_cat_distance === new_cat_distance && (new_exit_distance >= old_exit_distance)) {
         //the mouse maintains distance from cat
@@ -1863,7 +1757,7 @@ function animate() {
         //the mouse was actually close enough to the exit to escape but did not take the opportunity to do so
         //that is if the old cat was not coming from the old direction of the exit
         if((old_direction !== old_exit_direction) || ((new_exit_distance) < cat_to_exit)) {
-          reward = -(max_distance - myCats[0].rows.length);
+          reward = -(max_distance - cat.rows.length);
         }
       }
       else if((new_exit_distance < old_exit_distance) && ((new_exit_distance) < cat_to_exit)) {
@@ -1878,7 +1772,7 @@ function animate() {
       }
       else {
         //the cat got closer (penalize harder if the cat is close.)
-        reward = -(max_distance - myCats[0].rows.length);
+        reward = -(max_distance - cat.rows.length);
       } 
     }
     else if ((deadEnd === old_dead_end) && deadEnd) {
@@ -1887,14 +1781,14 @@ function animate() {
         //the mouse maintains distance from cat
         //penalize - because we have to escape
         //console.log("OH ISN'T THIS TEERRIBLE");
-        reward = -(max_distance - myCats[0].rows.length) - 0.5 * max_distance; //-(max_distance - myCats[0].rows.length);
+        reward = -(max_distance - cat.rows.length) - 0.5 * max_distance; //-(max_distance - cat.rows.length);
       }
       else if(old_cat_distance - 1 === new_cat_distance) {
         //the mouse is basically standing there waiting to get caught SMH
-        reward = -(max_distance - myCats[0].rows.length) - 0.5 * max_distance;
+        reward = -(max_distance - cat.rows.length) - 0.5 * max_distance;
       }
       else {
-        reward = (max_distance - myCats[0].rows.length) + 0.5 * max_distance;
+        reward = (max_distance - cat.rows.length) + 0.5 * max_distance;
       }
       exceptions = true;
     }
@@ -1923,23 +1817,9 @@ function animate() {
     document.getElementById('rewards-value').textContent = reward;
     document.getElementById('eRewards-value').textContent = episodeRewards;
 
-
-    // const KEEP_DISTANCE_EXIT_ATTEMPT = max_distance  //maintain distance from cat AND get closer to exit
-    // const KEEP_DISTANCE = max_distance / 2  //maintain distance from cat AND get further/maintain distance from exit
-    // const ESCAPE_ATTEMPT = max_distance   //mouse gets closer to cat, exit gets closer to mouse, exit is closer to mouse than cat is to mouse
-    // const CAUGHT = -max_distance * 3
-    // const ESCAPE = max_distance * 3
-
-
     let new_q;
-
-    // console.log("getting")
-    // console.log(mouse_row)
-    // console.log(mouse_col)
-    // console.log(direction)
-    // console.log(myCats[0].rows.length);
     
-    let new_stateIndex = getStateIndex(mouse_row, mouse_col, direction, myCats[0].rows.length);
+    let new_stateIndex = getStateIndex(mouse_row, mouse_col, direction, cat.rows.length);
     if(direction !== null) {
       initializeState(Qtable, new_stateIndex);
     }
@@ -1988,14 +1868,14 @@ function animate() {
         updateEpsilon();
       }
       
-      myCats[0].rows = [];
-      myCats[0].col = [];
+      cat.rows = [];
+      cat.col = [];
       let positions = selectFreePositions(map);
       show_path = false;
       player.position.y = get_continuous_X(positions.mousePosition.row) //startingY + (Boundary.width * 0);
       player.position.x = get_continuous_Y(positions.mousePosition.col) //startingX + (Boundary.width * 0);   
-      myCats[0].position.y = get_continuous_X(positions.catPosition.row) //startingY + (Boundary.width * 7);
-      myCats[0].position.x = get_continuous_Y(positions.catPosition.col) //startingX + (Boundary.width * 7);
+      cat.position.y = get_continuous_X(positions.catPosition.row) //startingY + (Boundary.width * 7);
+      cat.position.x = get_continuous_Y(positions.catPosition.col) //startingX + (Boundary.width * 7);
       updatePreyStatus();
 
       if(restart2) {
@@ -2012,8 +1892,3 @@ function animate() {
 
 }
 animate()
-
-
-
-
-
